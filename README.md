@@ -10,6 +10,12 @@ Using Poetry: Create the virtual environment in the same directory as the projec
 ```
 poetry config virtualenvs.in-project true
 poetry init
+poetry add faiss-cpu
+poetry add sentence-transformers
+```
+
+Using Poetry: Poetry install when buding the project initially
+```
 poetry install
 ```
 

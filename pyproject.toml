@@ -9,6 +9,8 @@ packages = [{include = "python_fastapi_vector_search"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 elasticsearch = "7.13.0"
+faiss-cpu = "^1.7.4"
+sentence-transformers = "^2.2.2"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,1 +1,3 @@
 elasticsearch==7.13.0
+faiss-cpu==1.7.4
+sentence-transformers== 22.2
