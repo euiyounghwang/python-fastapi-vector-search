@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+cd /Users/euiyoung.hwang/ES/Python_Workspace/python-fastapi-vector-search
 source ./.venv/bin/activate
 
 # GUNICORN is a WSGI framework which, di per se, is not compatible with Fastapi, since Fastapi uses the ASGI standard (i.e. asynchronous). 

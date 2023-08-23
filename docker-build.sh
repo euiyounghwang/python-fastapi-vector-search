@@ -7,7 +7,7 @@ set -eu
 docker build \
   -f "$(dirname "$0")/Dockerfile" \
   -t fn-vector-search-api:es \
-  --target runtime \
+  --target build \
   "$(dirname "$0")/."
 
 
