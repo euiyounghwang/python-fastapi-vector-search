@@ -94,16 +94,16 @@ workflows:
   version: 2
   build-master:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: 
-              - master
-              - dev
-              - /*.*/
+      # - build:
+      #     filters:
+      #       branches:
+      #         only: 
+      #         - master
+      #         - dev
+      #         - /*.*/
       - publish-latest:
-          requires:
-            - build
+          # requires:
+          #   - build
           filters:
             branches:
               only: master
