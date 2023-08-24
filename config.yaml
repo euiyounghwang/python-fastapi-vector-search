@@ -15,8 +15,8 @@
       }
     },
     "es": {
-      "omni_es_host": "http://host.docker.internal:9209",
-      "_omni_es_host": "http://localhost:9200",
+      "_omni_es_host": "http://host.docker.internal:9209",
+      "omni_es_host": "http://localhost:9209",
       "bees_es_host": "http://localhost:9200",
       "index" : {
           "alias" : "omnisearch_search"

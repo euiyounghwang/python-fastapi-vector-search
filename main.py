@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 # from config.log_config import create_log
 from injector import (logger, doc)
-from openapi.model import Item
+from openapi.api_model import Item, Search
 from controller.api_controller import (api_controller)
 import json
 
@@ -20,8 +20,8 @@ def get(id:str):
 
 
 @app.post("/v1/basic/search")
-async def Elasticsearch_Search(item: Item):
-    response_json = await api_controller(item)
+async def Elasticsearch_Search(request: Search):
+    response_json = await api_controller(request)
     return response_json
 
 

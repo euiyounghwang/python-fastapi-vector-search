@@ -3,3 +3,4 @@ faiss-cpu==1.7.4
 sentence-transformers== 22.2
 fastapi==0.101.1
 sqlalchemy==2.0.20
+pytest==7.4.0

@@ -1,12 +1,16 @@
 
 from config.log_config import create_log
 from controller.Handler.SearchOmniHandler import (SearchOmniHandler)
+from controller.Handler.QueryBuilder import (QueryBuilder)
 from elasticsearch import Elasticsearch
 import yaml
+import json
 
 def read_config_yaml():
     with open('./config.yaml', 'r') as f:
         doc = yaml.load(f, Loader=yaml.FullLoader)
+        
+    logger.info(json.dumps(doc, indent=2))
     
     return doc
 
@@ -26,4 +30,5 @@ es_client = Elasticsearch(hosts=doc['app']['es']['omni_es_host'],
 )
 
 SearchOmniHandlerInject = SearchOmniHandler(es_client, logger, doc['app'])
+QueryBuilderInject = QueryBuilder(es_client, logger, doc['app'])
 
