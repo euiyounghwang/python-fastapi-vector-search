@@ -2,25 +2,105 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
+  build:
+    working_directory: ~/repo
+
+    # Env with docker for openjdk instead of debian-11
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
+      - image: cimg/base:2023.08
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: 1234
+          POSTGRES_HOST_AUTH_METHOD: trust
+#      - image: cimg/openjdk:11.0.12
+      - image: cimg/python:3.10
+      # - image: cimg/python:3.6.9
+      - image: circleci/buildpack-deps:stretch
+
+    resource_class: large
+
+    environment:
+      TZ: "/usr/share/zoneinfo/UTC"
+      PKG_VERSION: git
+      CONDA_NUMBER_CHANNEL_NOTICES: 0
+      JVM_OPTS: -Xmx3200m
+      IMAGE_NAME: euiyoung/fn-flask-api
+
     steps:
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/configuration-reference/#workflows
+      - run:
+          name: Install OpenJDK 11
+          command: |
+            sudo apt-get update && sudo apt-get install openjdk-11-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
+            java -version
+
+      - run:
+          name: Install ElasticSearch 7
+          command: |
+            wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.13.0-linux-x86_64.tar.gz
+            tar -xzf elasticsearch-7.13.0-linux-x86_64.tar.gz
+            sudo elasticsearch-7.13.0/bin/elasticsearch-plugin install analysis-stempel;
+            sudo elasticsearch-7.13.0/bin/elasticsearch-plugin install analysis-ukrainian;
+            sudo elasticsearch-7.13.0/bin/elasticsearch-plugin install analysis-smartcn;
+            sudo elasticsearch-7.13.0/bin/elasticsearch-plugin install analysis-phonetic;
+            sudo elasticsearch-7.13.0/bin/elasticsearch-plugin install analysis-icu;
+
+      - run:
+          name: Start Elasticsearch 7
+          command: |
+            ES_JAVA_OPTS="-Xms1g -Xmx1g" elasticsearch-7.13.0/bin/elasticsearch
+          background: true
+
+#      - restore_cache:
+#          key: fnbees-{{ .Branch }}-{{ checksum "environment_omnisearch.lst" }}-{{ checksum "requirements_omnisearch.txt" }}
+
+
+      - restore_cache:
+          key: fnbees-{{ .Branch }}-{{ checksum "test-requirements.txt" }}-{{ checksum "requirements.txt" }}
+
+   
+  publish-latest:
+
+    environment:
+      IMAGE_NAME: euiyoung/fn-search-vector-api
+
+    docker:
+      - image: circleci/buildpack-deps:stretch
+
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: Build Docker image
+          command:
+#            docker build -t $IMAGE_NM:es .
+            docker build -t $IMAGE_NAME:es .
+
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $IMAGE_NAME:es
+
+
 workflows:
-  say-hello-workflow:
+  version: 2
+  build-master:
     jobs:
-      - say-hello
+      - build:
+          filters:
+            branches:
+              only: master
+      - publish-latest:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
