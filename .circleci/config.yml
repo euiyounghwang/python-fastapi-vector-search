@@ -90,19 +90,19 @@ jobs:
             docker push $IMAGE_NAME:es
 
 
-# workflows:
-#   version: 2
-#   build-master:
-#     jobs:
-#       - build:
-#           filters:
-#             branches:
-#               only: 
-#               - dev
-#               - master
-#       - publish-latest:
-#           requires:
-#             - build
-#           filters:
-#             branches:
-#               only: master
+workflows:
+  version: 2
+  build-master:
+    jobs:
+      # - build:
+      #     filters:
+      #       branches:
+      #         only: 
+      #         - dev
+      #         - master
+      - publish-latest:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
