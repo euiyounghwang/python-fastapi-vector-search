@@ -61,7 +61,7 @@ jobs:
 
 
       - restore_cache:
-          key: fnbees-{{ .Branch }}-{{ checksum "test-requirements.txt" }}-{{ checksum "requirements.txt" }}
+          key: fnbees-{{ .Branch }}-{{ checksum "requirements.txt" }}
 
    
   publish-latest:
