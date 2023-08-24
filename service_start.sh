@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-cd /Users/euiyoung.hwang/ES/Python_Workspace/python-fastapi-vector-search
+SCRIPTDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+cd $SCRIPTDIR
 source ./.venv/bin/activate
 
 # GUNICORN is a WSGI framework which, di per se, is not compatible with Fastapi, since Fastapi uses the ASGI standard (i.e. asynchronous). 
