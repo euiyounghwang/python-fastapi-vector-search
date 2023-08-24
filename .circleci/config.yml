@@ -95,12 +95,6 @@ workflows:
   build-master:
     jobs:
       - build
-          # filters:
-          #   branches:
-          #     # only: 
-              # - master
-              # - dev
-              # - /*.*/
       - publish-latest:
           requires:
             - build
