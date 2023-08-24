@@ -94,12 +94,12 @@ workflows:
   version: 2
   build-master:
     jobs:
-      # - build:
-      #     filters:
-      #       branches:
-      #         only: 
-      #         - dev
-      #         - master
+      - build:
+          filters:
+            branches:
+              only: 
+              # - dev
+              - master
       - publish-latest:
           requires:
             - build
