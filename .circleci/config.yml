@@ -100,7 +100,7 @@ workflows:
               only: 
               - master
               - dev
-              - /test-.*/
+              - /*.*/
       - publish-latest:
           requires:
             - build
