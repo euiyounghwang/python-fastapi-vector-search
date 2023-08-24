@@ -57,8 +57,6 @@ RUN /bin/bash -c 'source $POETRY_VENV/bin/activate && \
 
 Install Poerty to Dockerfile as runtime
 ```
-
-
 FROM --platform=linux/amd64 python:3.9.7 as runtime
 
 # Configure Poetry
