@@ -97,7 +97,7 @@ workflows:
       - build:
           filters:
             branches:
-              only: master
+              only: dev, master
       - publish-latest:
           requires:
             - build
