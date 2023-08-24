@@ -63,8 +63,6 @@ def test_api_es_search(mock_client):
      }
     response = test_client.post(
             '/v1/basic/search',
-            # data=json.dumps(request_body),
-            # content_type='application/json',
             json = request_body
     )
     assert response.status_code == 200
