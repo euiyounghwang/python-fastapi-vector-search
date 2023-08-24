@@ -39,4 +39,6 @@ WORKDIR /app
 COPY --from=build /app .
 COPY . ES-Services
 
+EXPOSE 7000
 ENTRYPOINT ["/app/ES-Services/docker-run-entrypoints.sh"]
+

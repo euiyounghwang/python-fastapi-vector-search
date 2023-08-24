@@ -36,6 +36,9 @@ Install Poerty to Dockerfile as runtime
 
 ```
 
+## Docker build
+![Alt text](image.png)
+
 ## Docker run
 ```
 docker run --platform linux/amd64 -it -d \
