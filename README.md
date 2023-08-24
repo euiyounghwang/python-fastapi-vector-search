@@ -37,14 +37,20 @@ Install Poerty to Dockerfile as runtime
 ```
 
 ## Docker build
+```
+docker build \
+  -f "$(dirname "$0")/Dockerfile" \
+  -t fn-vector-search-api:es \
+  --target build \
+  "$(dirname "$0")/."
+```
 ![Alt text](image.png)
 
 ## Docker run
 ```
-docker run --platform linux/amd64 -it -d \
-  --name fn-vector-search-app \
+docker run --rm --platform linux/amd64 -it -d \
+  --name fn-vector-search-api --publish 7000:7000 --expose 7000 \
   --network bridge \
-  -e ES_HOST="http://host.docker.internal:9209" \
-  -v "$SCRIPTDIR:/app/ES-Services/" \
-  fn-vector-search-api:es \
+  -v "$SCRIPTDIR:/app/FN-BEES-Services/" \
+  fn-vector-search-api:es
 ```
