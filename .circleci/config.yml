@@ -99,7 +99,8 @@ workflows:
             branches:
               only: 
               - master
-              - /*.*/
+              - dev
+              - /test-*/
       - publish-latest:
           requires:
             - build
