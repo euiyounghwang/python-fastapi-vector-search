@@ -18,6 +18,11 @@ pytz = "^2023.3"
 pytest-cov = "^4.1.0"
 httpx = "^0.24.1"
 mock = "^5.1.0"
+prometheus-client = "^0.17.1"
+prometheus-fastapi-instrumentator = "^6.1.0"
+starlette = "0.27.0"
+pandas = "^2.1.0"
+starlette-exporter = "^0.16.0"
 
 [build-system]
 requires = ["poetry>=1.1.1", "setuptools", "cython"]
