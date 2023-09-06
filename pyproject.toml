@@ -24,6 +24,7 @@ pandas = "^2.1.0"
 starlette-exporter = "^0.16.0"
 sqlalchemy = "1.4.26"
 databases = "0.5.3"
+psycopg2-binary = "^2.9.7"
 
 [build-system]
 requires = ["poetry>=1.1.1", "setuptools", "cython"]

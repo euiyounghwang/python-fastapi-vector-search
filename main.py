@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 # from config.log_config import create_log
 from injector import (logger, doc)
-from openapi.api_model import Item, Search
+from openapi.schemas import Item, Search
 from controller.api_controller import (api_controller)
 import json
 from starlette.middleware.cors import CORSMiddleware
@@ -9,9 +9,12 @@ from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_client import Counter, Histogram
 from prometheus_fastapi_instrumentator.metrics import Info
 # from openapi.db import engine, metadata, database
-from openapi.db import engine, metadata
+from openapi.models import engine, metadata, Base
 
-metadata.create_all(engine)
+# --
+# Add Tables
+# --
+Base.metadata.create_all(engine)
 
 # https://github.com/KenMwaura1/Fast-Api-Grafana-Starter/blob/main/src/app/db.py
 
