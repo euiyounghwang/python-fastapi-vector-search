@@ -1,5 +1,9 @@
 
 ### Python-Vector-Search Project based on Python-Fastapi
+- We use Facebook AI Similarity Search (FAISS) to efficiently search for similar text. Finding items that are similar is commonplace in many applications. Perhaps you want to find products in your store that match the description input by a customer. Or perhaps you want to find related questions
+- A vector or an embedding is a numerical representation of text data. For example, using an embedding framework, text like ‘name’ can be transformed into a numerical representatio
+- Semantic search consists of retrieving texts whose meaning matches a search query. For example, if your search query is “car,” the retrieved texts could include words such as “car,” “automobile,” “vehicle,” and so on. In contrast, keyword search only returns text passages with words of the search query.
+- The results of a semantic search are the texts whose embeddings are most similar to the query's embedding
 
 Install Poerty
 ```
