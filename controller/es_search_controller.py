@@ -7,7 +7,7 @@ from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject)
 import json
 
 app = APIRouter(
-    prefix="/v1/basic",
+    prefix="/es",
 )
 
 @app.post("/search")

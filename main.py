@@ -10,7 +10,7 @@ from prometheus_fastapi_instrumentator.metrics import Info
 import openapi.models
 from openapi.database import engine, metadata
 
-from controller import (es_search_controller, vector_search_controller)
+from controller import (es_search_controller, vector_search_controller, api_controller)
 from basic import api_request_counter, api_request_summary
 
 # --
@@ -67,3 +67,4 @@ def get(id:str):
 # router
 app.include_router(es_search_controller.app, tags=["search"], )
 app.include_router(vector_search_controller.app, tags=["vector_search"], )
+app.include_router(api_controller.app, tags=["Note_search"], )
