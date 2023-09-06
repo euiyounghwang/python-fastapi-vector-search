@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field, NonNegativeInt
 from datetime import datetime as dt
 from pytz import timezone as tz
 from enum import Enum
+from typing import List, Union
 
 # --
 # API Model
@@ -21,7 +22,7 @@ class Sort_Order(str, Enum):
 class Search(BaseModel):
     include_basic_aggs: bool = True
     pit_id: str = ""
-    query_string: str = "Cryptocurrency"
+    query_string: str = "video"
     size: int = 20
     # sort_order: str = "DESC"
     sort_order: Sort_Order = Sort_Order.desc
@@ -30,7 +31,7 @@ class Search(BaseModel):
     
 class NoteSchema(BaseModel):
     title: str = Field(..., min_length=3, max_length=50) #additional validation for the inputs 
-    description: str = Field(...,min_length=3, max_length=50)
+    description: Union[str, None] = None
     completed: str = "False"
     created_date: str = dt.now(tz("Africa/Nairobi")).strftime("%Y-%m-%d %H:%M")
     
@@ -39,3 +40,6 @@ class NoteSchema(BaseModel):
 
 class NoteDB(NoteSchema):
     id: int 
+    
+class Note_Sub_Entity(BaseModel):
+    pass

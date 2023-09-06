@@ -6,15 +6,17 @@ import json
 from starlette.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_fastapi_instrumentator.metrics import Info
-# from openapi.db import engine, metadata, database
-from openapi.models import engine, metadata, Base
+
+import openapi.models
+from openapi.database import engine, metadata
+
 from controller import (es_search_controller, vector_search_controller)
 from basic import api_request_counter, api_request_summary
 
 # --
 # Add Tables
 # --
-Base.metadata.create_all(engine)
+openapi.models.Base.metadata.create_all(engine)
 
 # https://github.com/KenMwaura1/Fast-Api-Grafana-Starter/blob/main/src/app/db.py
 
@@ -47,7 +49,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 @app.get("/v1/basic")

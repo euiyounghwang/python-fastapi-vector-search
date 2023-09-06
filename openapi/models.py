@@ -1,26 +1,10 @@
 import os
 
-from sqlalchemy import (Column, Integer, String, Table, create_engine, MetaData)
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-# from databases import Database
+from sqlalchemy import (Column, Integer, String, Table, create_engine, MetaData, UniqueConstraint, ForeignKey)
+from sqlalchemy.dialects.mysql import SMALLINT, TINYINT, BIGINT, CHAR
+from openapi.database import Base
 from datetime import datetime as dt
 from pytz import timezone as tz
-# from db.base_class import Base
-
-load_dotenv()
-# Database url if none is passed the default one is used
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:1234@localhost:15432/postgres")
-
-# SQLAlchemy
-engine = create_engine(DATABASE_URL)
-metadata = MetaData()
-
-# Session = sessionmaker()
-# Session.configure(bind=engine)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
 
 
 class Notes(Base):
@@ -43,3 +27,12 @@ class Notes(Base):
 
     def json(self):
         return {'id':self.id,'title': self.title, 'description': self.description, 'completed': self.completed}
+
+
+class Note_Sub_Entity(Base):
+    __tablename__ = "Note_Sub_Entity"
+    # __table_args__ = (UniqueConstraint("schema_name", "table_name", name="schema_table_uq_constraint"),)
+
+    table_no = Column(BIGINT(20), primary_key=True, autoincrement=True, nullable=False)
+    db_id = Column(Integer, ForeignKey("notes.id"), nullable=False, comment="DB ID")
+    sub_description = Column(String(50))
