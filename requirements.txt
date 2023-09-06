@@ -9,3 +9,5 @@ pytz==2023.3
 pytest-cov==4.1.0
 prometheus-client==0.16.0
 prometheus-fastapi-instrumentator==6.0.0
+databases==0.5.3
+SQLAlchemy==1.4.26

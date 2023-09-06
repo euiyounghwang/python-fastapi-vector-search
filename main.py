@@ -8,29 +8,43 @@ from starlette.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_client import Counter, Histogram
 from prometheus_fastapi_instrumentator.metrics import Info
+# from openapi.db import engine, metadata, database
+from openapi.db import engine, metadata
+
+metadata.create_all(engine)
 
 # https://github.com/KenMwaura1/Fast-Api-Grafana-Starter/blob/main/src/app/db.py
 
 app = FastAPI()
-instrumentator = Instrumentator(
-    should_group_status_codes=False,
-    should_ignore_untemplated=True,
-    should_respect_env_var=True,
-    should_instrument_requests_inprogress=True,
-    excluded_handlers=[".*admin.*", "/metrics"],
-    env_var_name="ENABLE_METRICS",
-    inprogress_name="inprogress",
-    inprogress_labels=True,
-)
+# instrumentator = Instrumentator(
+#     should_group_status_codes=False,
+#     should_ignore_untemplated=True,
+#     should_respect_env_var=True,
+#     should_instrument_requests_inprogress=True,
+#     excluded_handlers=[".*admin.*", "/metrics"],
+#     env_var_name="ENABLE_METRICS",
+#     inprogress_name="inprogress",
+#     inprogress_labels=True,
+# )
 Instrumentator().instrument(app).expose(app)
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_credentials=True,
+#     allow_methods=["DELETE", "GET", "POST", "PUT"],
+#     allow_headers=["*"],
+# )
+
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["DELETE", "GET", "POST", "PUT"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Define a counter metric
 REQUESTS_COUNT = Counter(
@@ -40,7 +54,6 @@ REQUESTS_COUNT = Counter(
 REQUESTS_TIME = Histogram("requests_time", "Request processing time", ["method", "endpoint"])
 api_request_summary = Histogram("api_request_summary", "Request processing time", ["method", "endpoint"])
 api_request_counter = Counter("api_request_counter", "Request processing time", ["method", "endpoint", "http_status"])
-
 
 @app.get("/v1/basic")
 # async def root():
