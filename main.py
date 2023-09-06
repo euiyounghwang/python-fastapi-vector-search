@@ -2,15 +2,14 @@ from fastapi import FastAPI, Request, Depends
 # from config.log_config import create_log
 from injector import (logger, doc)
 from openapi.schemas import Item, Search
-from controller.api_controller import (api_controller)
 import json
 from starlette.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_fastapi_instrumentator.metrics import Info
 # from openapi.db import engine, metadata, database
 from openapi.models import engine, metadata, Base
-from controller import Search_Router
-from metrics_var import api_request_counter, api_request_summary
+from controller import (es_search_controller, vector_search_controller)
+from basic import api_request_counter, api_request_summary
 
 # --
 # Add Tables
@@ -64,12 +63,6 @@ def get(id:str):
     return {"message": "Hello your id {}".format(id)}
 
 
-@app.post("/v1/basic/vector_search")
-async def Vector_Search(item: Item):
-    response_json = await api_controller(item)
-    return response_json
-
-
-app.include_router(Search_Router.app, 
-                   tags=["search"], 
-                   )
+# router
+app.include_router(es_search_controller.app, tags=["search"], )
+app.include_router(vector_search_controller.app, tags=["vector_search"], )

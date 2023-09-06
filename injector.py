@@ -23,6 +23,7 @@ def get_headers():
 # Initialize & Inject with only one instance
 logger = create_log()
 doc = read_config_yaml()
+# print(doc)
 es_client = Elasticsearch(hosts=doc['app']['es']['omni_es_host'],
                           headers=get_headers(),
                           verify_certs=False,
