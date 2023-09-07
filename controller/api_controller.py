@@ -18,14 +18,18 @@ import openapi.repository as repository
 import json
 
 app = APIRouter(
-    # prefix="/Note",
+    # prefix="/api",
 )
 
 
 ITEM_NOT_FOUND = "Item not found for id: {}"
+ITEM_NOT_FOUND_ALL = "Item not found all"
 
 
-@app.post("/Note", description="Create a new Item", summary="Create a new Item")
+@app.post("/Note", 
+          status_code=StatusHanlder.HTTP_STATUS_200,
+          description="Create a new Item", 
+          summary="Create a new Item")
 async def create(request: NoteSchema, db: Session = Depends(get_db)):
     request_json = {k : v for k, v in request}
     print(request, type(request), request_json)
@@ -38,7 +42,10 @@ async def create(request: NoteSchema, db: Session = Depends(get_db)):
     return request_json
 
 
-@app.put("/Note/{id}", description="Update an Item with given ID", summary="Update an Item with given ID")
+@app.put("/Note/{id}", 
+         status_code=StatusHanlder.HTTP_STATUS_200, 
+         description="Update an Item with given ID", 
+         summary="Update an Item with given ID")
 async def update(_id, request: NoteSchema, db: Session = Depends(get_db)):
     request_json = {k : v for k, v in request}
     print(request, type(request), request_json)
@@ -54,29 +61,43 @@ async def update(_id, request: NoteSchema, db: Session = Depends(get_db)):
     raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(_id)})
 
 
-@app.get("/Note", description="Returns a list of items", summary="Returns a list of items")
-async def get(db: Session = Depends(get_db)):
-    note_data = await repository.fetchAll(db)
+# --
+# http://localhost:7000/Note?limit=10&page=1
+# --
+@app.get("/Note", 
+         status_code=StatusHanlder.HTTP_STATUS_200,
+         description="Returns a list of items", 
+         summary="Returns a list of items")
+async def get_all(db: Session = Depends(get_db), limit: int = 10, page: int = 1, search: str = ""):
+    skip = (page - 1) * limit
+    note_data, totalRepo = await repository.fetchAll(db, skip, limit, search)
     if note_data:
         print(note_data, type(note_data))
         noteRepo = [obj.json() for obj in note_data]
         print(noteRepo, type(noteRepo))
-        return noteRepo
-    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(_id)})
+        return {"Total": len(totalRepo), "Results": noteRepo}
+    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND_ALL})
 
 
-@app.get("/Note/{id}", description="Return an Item with given ID", summary="Return an Item with given ID")
+@app.get("/Note/{id}", 
+         status_code=StatusHanlder.HTTP_STATUS_200,
+         description="Return an Item with given ID", 
+         summary="Return an Item with given ID")
 async def fetchById(_id, db: Session = Depends(get_db)):
-    note_data = await repository.fetchById(_id, db)
+    note_data, data_all = await repository.fetchById(_id, db)
     if note_data:
         print("fetchById - > {}".format(_id))
         logger.info(json.dumps(note_data.json(), indent=2))
-        return note_data.json()
+        return {"Total": len(data_all), "Results": note_data.json()}
+        # return note_data.json()
     
     raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(_id)})
     
 
-@app.delete("/Note/{id}", description="Deleted an Item with given ID", summary="Deleted an Item with given ID")
+@app.delete("/Note/{id}",
+            status_code=StatusHanlder.HTTP_STATUS_200, 
+            description="Deleted an Item with given ID", 
+            summary="Deleted an Item with given ID")
 async def deleteById(_id, db: Session = Depends(get_db)):
     note_data = await repository.deleteById(_id, db)
     if note_data:

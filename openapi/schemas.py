@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, NonNegativeInt
+from pydantic import BaseModel, Field, NonNegativeInt, validator
 from datetime import datetime as dt
 from pytz import timezone as tz
 from enum import Enum
@@ -42,6 +42,18 @@ class NoteSchema(BaseModel):
     
     class Config:
         orm_mode = True
+       
+    @validator("title", "description")
+    def not_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError('Not allow to value for empty')
+        return v
+    
+    @validator("title", "description")
+    def not_default(cls, v):
+        if v.strip() == "string":
+            raise ValueError('Not allow to value for string')
+        return v
 
 class NoteDB(NoteSchema):
     id: int 

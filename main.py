@@ -19,6 +19,11 @@ from basic import api_request_counter, api_request_summary
 # openapi.models.Base.metadata.drop_all(bind=engine)
 openapi.models.Base.metadata.create_all(engine)
 
+# --
+#  Create the FastAPI client.
+# --
+
+
 # https://github.com/KenMwaura1/Fast-Api-Grafana-Starter/blob/main/src/app/db.py
 
 app = FastAPI()
