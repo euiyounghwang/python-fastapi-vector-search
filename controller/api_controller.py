@@ -1,6 +1,6 @@
 
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from openapi.schemas import Item, Search, NoteSchema
 from prometheus_client import Counter, Histogram
@@ -29,23 +29,53 @@ async def create(request: NoteSchema, db: Session = Depends(get_db)):
     print(request, type(request), request_json)
     # logger.info("create : {}".format(json.dumps(request_json, indent=2)))
     status_code = await repository.create(request, db)
-    if status_code == 201:
-        return {"message " : "OK - Successful search executed"}
+    if status_code == 200:
+        return {"message " : "OK - Successful Query executed"}
     elif status_code == 202:
         return {"message " : "Warning - existing.."}
     return request_json
 
 
+@app.put("/Note/{id}", description="Update an Item with given ID")
+async def update(_id, request: NoteSchema, db: Session = Depends(get_db)):
+    request_json = {k : v for k, v in request}
+    print(request, type(request), request_json)
+    logger.info("update : {}".format(json.dumps(request_json, indent=2)))
+    note_data = await repository.fetchById(_id, db)
+    if note_data:
+        print('update in controller -> ', request_json)
+        note_data.title = request_json["title"]
+        note_data.description = request_json["description"]
+        status_code = await repository.update(note_data, db)
+        if status_code == 200:
+            return {"message " : "OK - Successful Query executed"}
+    raise HTTPException(status_code=404, detail={'message': ITEM_NOT_FOUND.format(_id)})
+
+
 @app.get("/Note")
 async def get(db: Session = Depends(get_db)):
-    list_all = await repository.fetchAll(db)
-    return list_all
+    note_data = await repository.fetchAll(db)
+    print(note_data, type(note_data))
+    noteRepo = [obj.json() for obj in note_data]
+    print(noteRepo, type(noteRepo))
+    return noteRepo
 
 
 @app.get("/Note/{id}")
 async def fetchById(_id, db: Session = Depends(get_db)):
     note_data = await repository.fetchById(_id, db)
     if note_data:
-        print('fetchById (seq) -> ', note_data)
+        print("fetchById - > {}".format(_id))
+        logger.info(json.dumps(note_data.json(), indent=2))
         return note_data.json()
-    return {'message': ITEM_NOT_FOUND.format(id)}, 404
+    
+    raise HTTPException(status_code=404, detail={'message': ITEM_NOT_FOUND.format(_id)})
+    
+
+@app.delete("/Note/{id}")
+async def deleteById(_id, db: Session = Depends(get_db)):
+    note_data = await repository.deleteById(_id, db)
+    if note_data:
+        print('deleteById -> ', note_data)
+        return {'message': 'Item deleted successfully'}
+    raise HTTPException(status_code=404, detail={'message': ITEM_NOT_FOUND.format(_id)})
