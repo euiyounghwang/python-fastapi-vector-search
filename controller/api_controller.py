@@ -23,7 +23,7 @@ app = APIRouter(
 ITEM_NOT_FOUND = "Item not found for id: {}"
 
 
-@app.post("/Note", description="create")
+@app.post("/Note", description="Create a new Item", summary="Create a new Item")
 async def create(request: NoteSchema, db: Session = Depends(get_db)):
     request_json = {k : v for k, v in request}
     print(request, type(request), request_json)
@@ -36,7 +36,7 @@ async def create(request: NoteSchema, db: Session = Depends(get_db)):
     return request_json
 
 
-@app.put("/Note/{id}", description="Update an Item with given ID")
+@app.put("/Note/{id}", description="Update an Item with given ID", summary="Update an Item with given ID")
 async def update(_id, request: NoteSchema, db: Session = Depends(get_db)):
     request_json = {k : v for k, v in request}
     print(request, type(request), request_json)
@@ -52,7 +52,7 @@ async def update(_id, request: NoteSchema, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail={'message': ITEM_NOT_FOUND.format(_id)})
 
 
-@app.get("/Note")
+@app.get("/Note", description="Returns a list of items", summary="Returns a list of items")
 async def get(db: Session = Depends(get_db)):
     note_data = await repository.fetchAll(db)
     print(note_data, type(note_data))
@@ -61,7 +61,7 @@ async def get(db: Session = Depends(get_db)):
     return noteRepo
 
 
-@app.get("/Note/{id}")
+@app.get("/Note/{id}", description="Return an Item with given ID", summary="Return an Item with given ID")
 async def fetchById(_id, db: Session = Depends(get_db)):
     note_data = await repository.fetchById(_id, db)
     if note_data:
@@ -72,7 +72,7 @@ async def fetchById(_id, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail={'message': ITEM_NOT_FOUND.format(_id)})
     
 
-@app.delete("/Note/{id}")
+@app.delete("/Note/{id}", description="Deleted an Item with given ID", summary="Deleted an Item with given ID")
 async def deleteById(_id, db: Session = Depends(get_db)):
     note_data = await repository.deleteById(_id, db)
     if note_data:
