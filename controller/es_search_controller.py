@@ -10,7 +10,7 @@ app = APIRouter(
     prefix="/es",
 )
 
-@app.post("/search")
+@app.post("/search", description="Search to ES", summary="Search to ES")
 async def Elasticsearch_Search(request: Search):
     api_request_counter.labels(method="POST", endpoint="/v1/basic/search", http_status=200).inc()
     api_request_summary.labels(method="POST", endpoint="/v1/basic/search").observe(0.1)

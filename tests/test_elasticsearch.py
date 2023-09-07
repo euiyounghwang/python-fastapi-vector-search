@@ -157,7 +157,7 @@ def test_api_es_search(mock_client):
             "start_date": "2021 01-01 00:00:00"
      }
     response = test_client.post(
-            '/v1/basic/search',
+            '/es/search',
             json = request_body
     )
     assert response.status_code == 200

@@ -12,7 +12,7 @@ app = APIRouter(
 )
 
 
-@app.post("/search")
+@app.post("/search", description="Search using FAISS", summary="Search using FAISS")
 async def Vector_Search(request: NoteSchema):
     request_json = {k : v for k, v in request}
     print(request, type(request), request_json)
