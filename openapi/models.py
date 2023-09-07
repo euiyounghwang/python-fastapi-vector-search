@@ -16,7 +16,7 @@ class Notes(Base):
     # completed = Column(String, nullable=False)
     # created_date = Column(String,default=dt.now(tz("Africa/Nairobi")).strftime("%Y-%m-%d %H:%M"))
     
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     title = Column(String(50))
     description = Column(String(50))
     completed = Column(String(8), nullable=False)
@@ -36,3 +36,9 @@ class Note_Sub_Entity(Base):
     table_no = Column(BIGINT(20), primary_key=True, autoincrement=True, nullable=False)
     db_id = Column(Integer, ForeignKey("notes.id"), nullable=False, comment="DB ID")
     sub_description = Column(String(50))
+    
+    def __repr__(self):
+        return 'Note_Sub_Entity(db_id=%d,sub_description=%s,)' % (self.db_id, self.sub_description)
+
+    def json(self):
+        return {'db_id':self.db_id,'sub_description': self.sub_description}

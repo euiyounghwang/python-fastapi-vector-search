@@ -30,10 +30,15 @@ class Search(BaseModel):
     
     
 class NoteSchema(BaseModel):
+    # id: uuid.UUID
     title: str = Field(..., min_length=3, max_length=50) #additional validation for the inputs 
     description: Union[str, None] = None
     completed: str = "False"
     created_date: str = dt.now(tz("Africa/Nairobi")).strftime("%Y-%m-%d %H:%M")
+    
+    # description: Optional[str] = None
+    # price: float
+    # tax: Optional[float] = None
     
     class Config:
         orm_mode = True

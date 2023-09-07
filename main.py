@@ -16,6 +16,7 @@ from basic import api_request_counter, api_request_summary
 # --
 # Add Tables
 # --
+# openapi.models.Base.metadata.drop_all(bind=engine)
 openapi.models.Base.metadata.create_all(engine)
 
 # https://github.com/KenMwaura1/Fast-Api-Grafana-Starter/blob/main/src/app/db.py
@@ -67,4 +68,4 @@ def get(id:str):
 # router
 app.include_router(es_search_controller.app, tags=["search"], )
 app.include_router(vector_search_controller.app, tags=["vector_search"], )
-app.include_router(api_controller.app, tags=["Note_search"], )
+app.include_router(api_controller.app, tags=["Note"], )
