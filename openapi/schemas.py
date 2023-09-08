@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, NonNegativeInt, validator
-from datetime import datetime as dt
+from datetime import datetime
 from pytz import timezone as tz
 from enum import Enum
 from typing import List, Union
@@ -34,7 +34,9 @@ class NoteSchema(BaseModel):
     title: str = Field(..., min_length=3, max_length=50) #additional validation for the inputs 
     description: Union[str, None] = None
     completed: str = "False"
-    created_date: str = dt.now(tz("Africa/Nairobi")).strftime("%Y-%m-%d %H:%M")
+    created_at: datetime
+    # created_date: str = dt.now(tz("Africa/Nairobi")).strftime("%Y-%m-%d %H:%M")
+    
     
     # description: Optional[str] = None
     # price: float

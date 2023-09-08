@@ -53,7 +53,7 @@ async def create(note, db: Session):
     if is_row:
         return StatusHanlder.HTTP_STATUS_202
     
-    note_data = Notes(title=note.title, description=note.description, completed=note.completed, created_date=note.created_date)
+    note_data = Notes(title=note.title, description=note.description, completed=note.completed)
     db.add(note_data)
     db.commit()
     print('Created..')
