@@ -3,6 +3,7 @@ from datetime import datetime
 from pytz import timezone as tz
 from enum import Enum
 from typing import List, Union
+import uuid
 
 # --
 # API Model
@@ -34,7 +35,7 @@ class NoteSchema(BaseModel):
     title: str = Field(..., min_length=3, max_length=50) #additional validation for the inputs 
     description: Union[str, None] = None
     completed: str = "False"
-    created_at: datetime
+    # created_at: datetime
     # created_date: str = dt.now(tz("Africa/Nairobi")).strftime("%Y-%m-%d %H:%M")
     
     
@@ -56,6 +57,20 @@ class NoteSchema(BaseModel):
         if v.strip() == "string":
             raise ValueError('Not allow to value for string')
         return v
+
+
+class NoteResponse(NoteSchema):
+    id: uuid.UUID
+    title: str
+    description: str
+    created_at: datetime
+    updated_at: datetime
+
+
+class NoteResponseSchema(BaseModel):
+    Total: int
+    Results: List[NoteResponse]
+
 
 class NoteDB(NoteSchema):
     id: int 

@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from openapi.schemas import Item, Search, NoteSchema
+from openapi.schemas import (Item, Search, NoteSchema, NoteResponseSchema)
 from prometheus_client import Counter, Histogram
 from basic import api_request_counter, api_request_summary
 from injector import (logger, doc)
@@ -65,6 +65,7 @@ async def update(_id, request: NoteSchema, db: Session = Depends(get_db)):
 # http://localhost:7000/Note?limit=10&page=1
 # --
 @app.get("/Note", 
+         response_model=NoteResponseSchema, 
          status_code=StatusHanlder.HTTP_STATUS_200,
          description="Returns a list of items", 
          summary="Returns a list of items")
