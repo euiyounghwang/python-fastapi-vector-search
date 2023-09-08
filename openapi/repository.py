@@ -30,7 +30,7 @@ async def fetchById(_id, db: Session):
 
 
 async def deleteById(_id, db: Session):
-    is_row = db.query(Notes).filter(str(Notes.id) == _id).first()
+    is_row = db.query(Notes).filter(Notes.id == _id).first()
     if is_row:
         print("{} is exist...now deleting".format(_id))
         # note_data = Notes(id=_id)
@@ -49,14 +49,14 @@ async def update(note, db: Session):
     
 async def create(note, db: Session):
     print('create -> ', note)
-    is_row = db.query(Notes).filter(Notes.title==note.title).first()
-    if is_row:
-        return StatusHanlder.HTTP_STATUS_202
+    # is_row = db.query(Notes).filter(Notes.title==note.title).first()
+    # if is_row:
+    #     return StatusHanlder.HTTP_STATUS_202
     
     note_data = Notes(title=note.title, description=note.description, completed=note.completed)
     db.add(note_data)
     db.commit()
-    print('Created..')
+    print('Created..', note_data.id)
     logger.info(json.dumps(note_data.json(), indent=2))
-    return StatusHanlder.HTTP_STATUS_200
+    return StatusHanlder.HTTP_STATUS_200, note_data.id
     

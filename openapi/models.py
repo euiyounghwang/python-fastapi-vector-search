@@ -37,7 +37,7 @@ class Notes(Base):
         return 'NotesModel(id=%s,title=%s,description=%s,completed=%s,created_at=%s,updated_at=%s,)' % (self.id, self.title, self.description, self.completed, self.created_at, self.updated_at)
 
     def json(self):
-        return {'id':str(self.id),'title': self.title, 'description': self.description, 'completed': self.completed, 'created_at': self.created_at, 'updated_at' : self.updated_at}
+        return {'id':str(self.id),'title': self.title, 'description': self.description, 'completed': self.completed, 'created_at': str(self.created_at), 'updated_at' : str(self.updated_at)}
 
 
 class Note_Sub_Entity(Base):

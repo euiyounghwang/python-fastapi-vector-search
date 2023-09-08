@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from injector import doc
 
 # --
-# Create database engine and SQLite settings.
+# Create database engine and Postgres settings.
 # --
 
 load_dotenv()

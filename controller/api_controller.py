@@ -34,9 +34,9 @@ async def create(request: NoteSchema, db: Session = Depends(get_db)):
     request_json = {k : v for k, v in request}
     print(request, type(request), request_json)
     # logger.info("create : {}".format(json.dumps(request_json, indent=2)))
-    status_code = await repository.create(request, db)
+    status_code, created_uuid = await repository.create(request, db)
     if status_code == StatusHanlder.HTTP_STATUS_200:
-        return {"message " : "OK - Successful Query executed"}
+        return {"message " : "OK - Successful Query executed", "uuid" : created_uuid}
     elif status_code == 202:
         return {"message " : "Warning - existing.."}
     return request_json
@@ -58,7 +58,7 @@ async def update(_id, request: NoteSchema, db: Session = Depends(get_db)):
         status_code = await repository.update(note_data, db)
         if status_code == StatusHanlder.HTTP_STATUS_200:
             return {"message " : "OK - Successful Query executed"}
-    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(_id)})
+    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(id)})
 
 
 # --
@@ -84,24 +84,24 @@ async def get_all(db: Session = Depends(get_db), limit: int = 10, page: int = 1,
          status_code=StatusHanlder.HTTP_STATUS_200,
          description="Return an Item with given ID", 
          summary="Return an Item with given ID")
-async def fetchById(_id, db: Session = Depends(get_db)):
-    note_data, data_all = await repository.fetchById(_id, db)
+async def fetchById(id, db: Session = Depends(get_db)):
+    note_data, data_all = await repository.fetchById(id, db)
     if note_data:
-        print("fetchById - > {}".format(_id))
+        print("fetchById - > {}".format(id))
         logger.info(json.dumps(note_data.json(), indent=2))
         return {"Total": len(data_all), "Results": note_data.json()}
         # return note_data.json()
     
-    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(_id)})
+    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(id)})
     
 
 @app.delete("/Note/{id}",
             status_code=StatusHanlder.HTTP_STATUS_200, 
             description="Deleted an Item with given ID", 
             summary="Deleted an Item with given ID")
-async def deleteById(_id, db: Session = Depends(get_db)):
-    note_data = await repository.deleteById(_id, db)
-    if note_data:
-        print('deleteById -> ', note_data)
-        return {'message': 'Item deleted successfully'}
-    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(_id)})
+async def deleteById(id, db: Session = Depends(get_db)):
+    status_code = await repository.deleteById(id, db)
+    if status_code == 200:
+        print('deleteById -> ', id)
+        return {'message': 'Item: {} was deleted successfully'.format(id)}
+    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(id)})
