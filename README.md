@@ -107,3 +107,13 @@ source .venv/bin/activate
 uvicorn main:app --reload --port=7000 --workers 4
 ```
 ![Alt text](image-1.png)
+
+
+## FastAPI with Swagger UI
+```
+Willing to build FAISS (Facebook AI Similarity Search) with train model to search for similar text
+Build Model/Schema with Postgres
+Build Search with Elasticsearch
+```
+
+![Alt text](image-2.png)
