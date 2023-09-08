@@ -33,3 +33,4 @@ es_client = Elasticsearch(hosts=doc['app']['es']['omni_es_host'],
 SearchOmniHandlerInject = SearchOmniHandler(es_client, logger, doc['app'])
 QueryBuilderInject = QueryBuilder(es_client, logger, doc['app'])
 
+

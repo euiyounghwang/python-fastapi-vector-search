@@ -21,8 +21,8 @@ def test_CRUD_api(mock_client):
     response = mock_client.post("/Note", json=sample_payload)
     assert response.status_code == 200
     assert response.json() == {
-            "message ": "OK - Successful Query executed",
-            "uuid": response.json()['uuid']
+        "message ": "OK - Successful Query executed",
+        "uuid": response.json()['uuid']
     }
     print(response.json()['uuid'])
     uuid = str(response.json()['uuid'])
