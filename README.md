@@ -8,7 +8,7 @@
 
 ### Environment
 - <i>No module named 'sentence_transformers' based on Poetry and Python .Venv Environment</i>
-- Try to make an enviroment on Conda
+- Try to make an enviroment on Conda and builder Docker & Docker-compose.yml
 
 ### Swagger for FAISS Model
 - __<i>Support Similarity Search using FAISS Model from trained sample datasets</i>__
