@@ -16,6 +16,8 @@ app = APIRouter(
 
 v_model = V_FAISS()
 
+ITEM_NOT_FOUND = "Item not found for id: {}"
+
 @app.post("/search", 
           status_code=StatusHanlder.HTTP_STATUS_200, 
           description="Search using FAISS", 
@@ -28,6 +30,9 @@ async def Vector_Search(keyword: str = "Where is your office?"):
     '''
     logger.info("vector_search_controller : {}".format(json.dumps(keyword, indent=2)))
     logger.info(await v_model.get_text_df())
-    await v_model.create_vector(keyword)
+    ressult_dic = await v_model.create_vector(keyword)
     
-    return {"okay" : "1"}
+    if not ressult_dic:
+        raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(keyword)})
+    
+    return ressult_dic

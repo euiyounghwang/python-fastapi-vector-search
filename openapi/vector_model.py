@@ -1,7 +1,9 @@
 
 import pandas as pd
 import numpy as np
+import json
 import faiss
+from injector import (logger, doc)
 from sentence_transformers import SentenceTransformer
 ''' conda create --yes --quiet --name fastapi_service python==3.9 '''
 ''' conda install -c conda-forge sentence-transformers '''
@@ -19,6 +21,8 @@ class V_FAISS(object):
             ['Address', 'location']
         ]
         self.df = self.inital_data_loading()
+        self.encoder = SentenceTransformer("paraphrase-mpnet-base-v2")
+        self.f_index = self.build_FAISS_index(self.train_vector())
         
         
     def inital_data_loading(self):
@@ -30,16 +34,40 @@ class V_FAISS(object):
         return self.df
     
     
+    def train_vector(self):
+        text = self.df['text']
+        vectors = self.encoder.encode(text)
+        logger.info("train_vector's keyword : {}, vectors : {}".format(text, vectors))
+        return vectors
+    
+    
+    def build_FAISS_index(self, vectors):
+        vector_dimension = vectors.shape[1]
+        index = faiss.IndexFlatL2(vector_dimension)
+        faiss.normalize_L2(vectors)
+        index.add(vectors)
+        return index
+            
+
     async def create_vector(self, search):
-        search_vector = encoder.encode(search)
+        ''' transforming to numerical representation for search text '''
+        search_vector = self.encoder.encode(search)
         _vector = np.array([search_vector])
         faiss.normalize_L2(_vector)
-        logger.info("create_vector's keyword : {}, vectors : {}".format(text, _vector))
+        logger.info("create_vector's keyword : {}, vectors : {}".format(search, _vector))
         
-    
-    async def train_vector(self):
-        text = self.df['text']
-        encoder = SentenceTransformer("paraphrase-mpnet-base-v2")
-        vectors = encoder.encode(text)
-        logger.info("create_vector's keyword : {}, vectors : {}".format(text, vectors))
+        ''' search '''
+        k = self.f_index.ntotal
+        distances, ann = self.f_index.search(_vector, k=k)
         
+        ''' resulsts '''
+        results = pd.DataFrame({'distances': distances[0], 'ann': ann[0]})
+        logger.info("results : {}".format(results))
+        df = pd.merge(results, self.df, left_on='ann', right_index=True)
+        logger.info("merge : {}".format(df))
+        list_dict = []
+        for index, row in list(df.iterrows()):
+            list_dict.append(dict(row))
+        logger.info("list_dict : {}".format(json.dumps(list_dict, indent=2)))
+        
+        return list_dict
