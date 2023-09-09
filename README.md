@@ -11,6 +11,8 @@
 - Try to make an enviroment on Conda
 
 ### Swagger for FAISS Model
+- <i>Build Similarity Search using FAISS Model from trained sample datasets</i>
+- <i>I'll try to make it to REST API Endpoint with building /train, /reloading the model and search</i>
 ![Alt text](image-3.png)
 
 ### Swagger for Elasticsearch
