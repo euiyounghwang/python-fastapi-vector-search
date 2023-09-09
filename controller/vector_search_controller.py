@@ -5,7 +5,7 @@ from prometheus_client import Counter, Histogram
 # from metrics_var import api_request_counter, api_request_summary
 from basic import api_request_counter, api_request_summary
 from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject)
-from openapi.vector_model import V_FAISS
+from openapi.vector_model import (V_FAISS, V_FAISS_Example)
 from controller.Handler.StatusHanlder import StatusHanlder
 import json
 
@@ -14,7 +14,8 @@ app = APIRouter(
     prefix="/vector",
 )
 
-v_model = V_FAISS()
+''' test FAISS model '''
+v_model = V_FAISS_Example()
 
 ITEM_NOT_FOUND = "Item not found for id: {}"
 

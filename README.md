@@ -10,6 +10,10 @@
 - <i>No module named 'sentence_transformers' based on Poetry and Python .Venv Environment</i>
 - Try to make an enviroment on Conda
 
+### Swagger for FAISS Model
+![Alt text](image-3.png)
+
+
 ## Docker build
 ```
 docker build \

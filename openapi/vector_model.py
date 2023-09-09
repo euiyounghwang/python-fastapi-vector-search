@@ -12,6 +12,17 @@ from sentence_transformers import SentenceTransformer
 
 
 class V_FAISS(object):
+    ''' build train model, load it and search in this class '''
+    def __init__(self):
+        self.data = [
+            ['Where are your headquarters located?', 'location'],
+            ['Throw my cellphone in the water', 'random'],
+            ['Network Access Control?', 'networking'],
+            ['Address', 'location']
+        ]
+
+
+class V_FAISS_Example(object):
     
     def __init__(self):
         self.data = [
