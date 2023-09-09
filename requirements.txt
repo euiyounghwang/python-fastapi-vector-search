@@ -13,3 +13,5 @@ databases==0.5.3
 SQLAlchemy==1.4.26
 fastapi-pagination==0.12.9
 python-dotenv==1.0.0
+uvicorn==0.23.2
+mock==5.1.0

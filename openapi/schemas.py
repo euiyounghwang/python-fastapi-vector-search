@@ -44,7 +44,9 @@ class NoteSchema(BaseModel):
     # tax: Optional[float] = None
     
     class Config:
-        orm_mode = True
+        # * 'orm_mode' has been renamed to 'from_attributes'
+        # orm_mode = True
+        from_attributes = True
        
     @validator("title", "description")
     def not_empty(cls, v):

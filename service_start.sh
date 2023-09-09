@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
 
-SCRIPTDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+# SCRIPTDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+# cd $SCRIPTDIR
+# source .venv/bin/activate
 
-cd $SCRIPTDIR
-source .venv/bin/activate
+source /Users/euiyoung.hwang/opt/anaconda3/bin/activate fastapi_service
 
 # GUNICORN is a WSGI framework which, di per se, is not compatible with Fastapi, since Fastapi uses the ASGI standard (i.e. asynchronous). 
 # This means that Gunicorn will have to use some layer of abstraction (uvicorn.workers.UvicornWorker) in order to communicate with the asynchronous call

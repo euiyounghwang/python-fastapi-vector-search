@@ -71,6 +71,6 @@ def get(id:str):
 
 
 # router
-app.include_router(es_search_controller.app, tags=["search"], )
-app.include_router(vector_search_controller.app, tags=["vector_search"], )
+app.include_router(es_search_controller.app, tags=["Search"], )
+app.include_router(vector_search_controller.app, tags=["FAISS"], )
 app.include_router(api_controller.app, tags=["Note"], )

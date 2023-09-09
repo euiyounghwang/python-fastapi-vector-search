@@ -10,7 +10,6 @@ packages = [{include = "python_fastapi_vector_search"}]
 python = "^3.9"
 elasticsearch = "7.13.0"
 faiss-cpu = "^1.7.4"
-sentence-transformers = "^2.2.2"
 fastapi = "^0.101.1"
 pytest = "^7.4.0"
 pytz = "^2023.3"
@@ -27,6 +26,7 @@ databases = "0.5.3"
 psycopg2-binary = "^2.9.7"
 fastapi-pagination = "^0.12.9"
 python-dotenv = "^1.0.0"
+sentence-transformers = "2.2.1"
 
 [build-system]
 requires = ["poetry>=1.1.1", "setuptools", "cython"]
