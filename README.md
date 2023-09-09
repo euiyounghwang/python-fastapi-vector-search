@@ -13,6 +13,8 @@
 ### Swagger for FAISS Model
 ![Alt text](image-3.png)
 
+### Swagger for Elasticsearch
+![Alt text](image-4.png)
 
 ## Docker build
 ```
