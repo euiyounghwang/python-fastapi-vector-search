@@ -24,8 +24,7 @@ class V_FAISS(object):
     
     async def reloading_model(self):
         pass
-    
-    
+        
     async def train_model(self):
         pass
     
