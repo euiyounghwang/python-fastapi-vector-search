@@ -3,6 +3,7 @@ from config.log_config import create_log
 from controller.Handler.SearchOmniHandler import (SearchOmniHandler)
 from controller.Handler.QueryBuilder import (QueryBuilder)
 from elasticsearch import Elasticsearch
+from controller.Util.es_utils import ES_Utils
 import yaml
 import json
 
@@ -32,5 +33,6 @@ es_client = Elasticsearch(hosts=doc['app']['es']['omni_es_host'],
 
 SearchOmniHandlerInject = SearchOmniHandler(es_client, logger, doc['app'])
 QueryBuilderInject = QueryBuilder(es_client, logger, doc['app'])
+metrics_service = ES_Utils(logger, doc, es_client)
 
 

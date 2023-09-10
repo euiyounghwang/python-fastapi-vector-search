@@ -6,6 +6,9 @@
 - The results of a semantic search are the texts whose embeddings are most similar to the query's embedding (https://blog.dataiku.com/semantic-search-an-overlooked-nlp-superpower?ref=dylancastillo.co)
 - Reference : https://pytest-with-eric.com/pytest-advanced/pytest-fastapi-testing/ 
 
+### REST API Realtime Performance using Prometheus
+![Alt text](image-6.png)
+
 ### Environment
 - <i>No module named 'sentence_transformers' based on Poetry on Python/.Venv Environment. So try to make an enviroment on Conda and builder Docker & Docker-compose.yml
 

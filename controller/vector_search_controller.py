@@ -4,12 +4,12 @@ from openapi.schemas import Item, Search, NoteSchema
 from prometheus_client import Counter, Histogram
 # from metrics_var import api_request_counter, api_request_summary
 from basic import api_request_counter, api_request_summary
-from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject, es_client)
+from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject, es_client, metrics_service)
 from openapi.vector_model import (V_FAISS, V_FAISS_Example)
+# from controller.Util.es_utils import ES_Utils
 from controller.Handler.StatusHanlder import StatusHanlder
 import json
 import datetime
-
 
 app = APIRouter(
     prefix="/model",
@@ -17,6 +17,7 @@ app = APIRouter(
 
 ''' test FAISS model '''
 v_model = V_FAISS_Example()
+# metrics_service = ES_Utils(logger, doc, es_client)
 
 ITEM_NOT_FOUND = "Item not found for id: {}"
 
@@ -49,6 +50,7 @@ async def Vector_Search(keyword: str = "Where is your office?"):
     For example, using an embedding framework, text like ‘name’ can be transformed into a numerical representation like: 
     Normalization is the process of transforming numerical data so that it uses a common scale 
     '''
+    StartTime, EndTime, Delay_Time = 0, 0, 0
     try:
         StartTime = datetime.datetime.now()
     
@@ -65,11 +67,4 @@ async def Vector_Search(keyword: str = "Where is your office?"):
     
         return ressult_dic
     finally:
-        logger.info("Delay Time : {}".format(Delay_Time))
-        log = {
-            "entity_type": "Fastapi realtime performance", 
-            "elapsed_time": float(Delay_Time), 
-            "@timestamp": datetime.datetime.now()
-            # "@timestamp": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }
-        es_client.index(index="test_service_realtime_metrics_v1", body=log)
+        metrics_service.track_performance_metrics(Delay_Time)
