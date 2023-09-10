@@ -4,10 +4,11 @@ from openapi.schemas import Item, Search, NoteSchema
 from prometheus_client import Counter, Histogram
 # from metrics_var import api_request_counter, api_request_summary
 from basic import api_request_counter, api_request_summary
-from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject)
+from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject, es_client)
 from openapi.vector_model import (V_FAISS, V_FAISS_Example)
 from controller.Handler.StatusHanlder import StatusHanlder
 import json
+import datetime
 
 
 app = APIRouter(
@@ -48,11 +49,27 @@ async def Vector_Search(keyword: str = "Where is your office?"):
     For example, using an embedding framework, text like ‘name’ can be transformed into a numerical representation like: 
     Normalization is the process of transforming numerical data so that it uses a common scale 
     '''
-    logger.info("vector_search_controller : {}".format(json.dumps(keyword, indent=2)))
-    logger.info(await v_model.get_text_df())
-    ressult_dic = await v_model.search(keyword)
+    try:
+        StartTime = datetime.datetime.now()
     
-    if not ressult_dic:
-        raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(keyword)})
+        logger.info("vector_search_controller : {}".format(json.dumps(keyword, indent=2)))
+        logger.info(await v_model.get_text_df())
+        ressult_dic = await v_model.search(keyword)
+        
+        EndTime = datetime.datetime.now()
+
+        Delay_Time = str((EndTime - StartTime).seconds) + '.' + str((EndTime - StartTime).microseconds).zfill(6)[:2]
+        
+        if not ressult_dic:
+            raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(keyword)})
     
-    return ressult_dic
+        return ressult_dic
+    finally:
+        logger.info("Delay Time : {}".format(Delay_Time))
+        log = {
+            "entity_type": "Fastapi realtime performance", 
+            "elapsed_time": float(Delay_Time), 
+            "@timestamp": datetime.datetime.now()
+            # "@timestamp": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+        es_client.index(index="test_service_realtime_metrics_v1", body=log)

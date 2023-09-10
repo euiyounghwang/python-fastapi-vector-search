@@ -24,6 +24,8 @@ def test_elasticsearch(mock_es_client):
         except NotFoundError:
             pass
     try_delete_index("test_ngram_v1")
+    try_delete_index("test_performance_metrics_v1")
+    try_delete_index("test_service_realtime_metrics_v1")
 
     def create_index(index, def_file_name):
         from os.path import dirname
@@ -32,6 +34,8 @@ def test_elasticsearch(mock_es_client):
             index_def = f.read()
         ic.create(index, index_def)
     create_index("test_ngram_v1", "/test_mapping/omnisearch_ngram_mapping.json")
+    create_index("test_performance_metrics_v1", "/test_mapping/performance_metrics_mapping.json")
+    create_index("test_service_realtime_metrics_v1", "/test_mapping/performance_metrics_mapping.json")
 
     # ngram index
     es.index(index="test_ngram_v1", id=111, body={
