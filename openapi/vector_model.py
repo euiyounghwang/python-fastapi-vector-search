@@ -15,10 +15,10 @@ class V_FAISS(object):
     ''' build train model, load it and search in this class '''
     def __init__(self):
         self.data = [
-            ['Where are your headquarters located?', 'location'],
-            ['Throw my cellphone in the water', 'random'],
-            ['Network Access Control?', 'networking'],
-            ['Address', 'location']
+            ['Where are your headquarters located?'],
+            ['Throw my cellphone in the water'],
+            ['Network Access Control?'],
+            ['Address']
         ]
 
 
@@ -38,6 +38,7 @@ class V_FAISS_Example(object):
         
     def inital_data_loading(self):
         df = pd.DataFrame(self.data, columns = ['text', 'category'])
+        # df = pd.DataFrame(self.data, columns = ['text'])
         return df
         
         
@@ -59,6 +60,13 @@ class V_FAISS_Example(object):
         index.add(vectors)
         return index
             
+    async def df_transform_to_json(self, df):
+        list_dict = []
+        for index, row in list(df.iterrows()):
+            list_dict.append(dict(row))
+        logger.info("list_dict : {}".format(json.dumps(list_dict, indent=2)))
+        
+        return list_dict
 
     async def create_vector(self, search):
         ''' transforming to numerical representation for search text '''
@@ -74,11 +82,13 @@ class V_FAISS_Example(object):
         ''' resulsts '''
         results = pd.DataFrame({'distances': distances[0], 'ann': ann[0]})
         logger.info("results : {}".format(results))
+        
+        ''' merge with meta datas '''
         df = pd.merge(results, self.df, left_on='ann', right_index=True)
         logger.info("merge : {}".format(df))
-        list_dict = []
-        for index, row in list(df.iterrows()):
-            list_dict.append(dict(row))
-        logger.info("list_dict : {}".format(json.dumps(list_dict, indent=2)))
         
-        return list_dict
+        return await self. df_transform_to_json(df)
+        
+       
+        
+        
