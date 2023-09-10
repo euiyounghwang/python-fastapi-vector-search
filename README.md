@@ -7,8 +7,7 @@
 - Reference : https://pytest-with-eric.com/pytest-advanced/pytest-fastapi-testing/ 
 
 ### Environment
-- <i>No module named 'sentence_transformers' based on Poetry and Python .Venv Environment</i>
-- Try to make an enviroment on Conda and builder Docker & Docker-compose.yml
+- <i>No module named 'sentence_transformers' based on Poetry on Python/.Venv Environment. So try to make an enviroment on Conda and builder Docker & Docker-compose.yml
 
 ### Swagger for FAISS Model
 - __<i>Support Similarity Search using FAISS Model from trained sample datasets</i>__
