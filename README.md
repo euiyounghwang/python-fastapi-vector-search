@@ -7,8 +7,12 @@
 - Reference : https://pytest-with-eric.com/pytest-advanced/pytest-fastapi-testing/ 
 
 ### Install Tools
+- Postgres
 ```
 docker run --name postgres-local --network bridge -e POSTGRES_PASSWORD=1234 -p 15432:5432 -d postgres
+```
+- Elasticsearch/Kibana v8.
+```
 docker run --name kibaba-run --network bridge -e "ELASTICSEARCH_URL=http://host.docker.internal:9209" -e "ES_JAVA_OPTS=-Xms1g -Xmx1g" -e "ELASTICSEARCH_HOSTS=http://host.docker.internal:9209" -p 5801:5601 docker.elastic.co/kibana/kibana:8.7.0
 docker run --name es8-run --network bridge -p 9209:9200 -p 9114:9114 -p 9309:9300 -e "http.cors.enabled=true" -e "http.cors.allow-origin=\"*\"" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" -e "http.cors.allow-credentials=true" -e "xpack.security.enabled=false" -e "discovery.type=single-node" -e "ES_JAVA_OPTS=-Xms2g -Xmx2g" docker.elastic.co/elasticsearch/elasticsearch:8.7.0
 ```
