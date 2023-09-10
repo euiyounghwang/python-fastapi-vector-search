@@ -11,13 +11,24 @@ import json
 
 
 app = APIRouter(
-    prefix="/vector",
+    prefix="/model",
 )
 
 ''' test FAISS model '''
 v_model = V_FAISS_Example()
 
 ITEM_NOT_FOUND = "Item not found for id: {}"
+
+
+
+@app.get("/reloading", 
+         status_code=StatusHanlder.HTTP_STATUS_200,
+         description="Reload trained model", 
+         summary="Reload trained model")
+async def get_reload_model():
+    ''' Saved model and call this api to reload '''
+    return {'message' : "reloading"}
+
 
 @app.post("/search", 
           status_code=StatusHanlder.HTTP_STATUS_200, 
