@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from openapi.schemas import Item, Search, NoteSchema
 from prometheus_client import Counter, Histogram
 # from metrics_var import api_request_counter, api_request_summary
@@ -17,10 +17,10 @@ app = APIRouter(
 
 ''' test FAISS model '''
 v_model = V_FAISS_Example()
-# metrics_service = ES_Utils(logger, doc, es_client)
+f_model = V_FAISS()
 
 ITEM_NOT_FOUND = "Item not found for id: {}"
-
+ITEM_NOT_FOUND_ALL = "Item not found all"
 
 @app.get("/reloading", 
          status_code=StatusHanlder.HTTP_STATUS_200,
@@ -37,6 +37,10 @@ async def get_reload_model():
          summary="Train the model")
 async def build_train_model():
     ''' Train and Save the model '''
+    status_code = await f_model.train_model()
+    if not status_code:
+        raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND_ALL})
+        
     return {'message' : "build_train_model"}
 
 
@@ -55,8 +59,8 @@ async def Vector_Search(keyword: str = "Where is your office?"):
         StartTime = datetime.datetime.now()
     
         logger.info("vector_search_controller : {}".format(json.dumps(keyword, indent=2)))
-        logger.info(await v_model.get_text_df())
-        ressult_dic = await v_model.search(keyword)
+        # logger.info(await v_model.get_text_df())
+        ressult_dic = await f_model.search(keyword)
         
         EndTime = datetime.datetime.now()
 
