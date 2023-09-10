@@ -7,7 +7,7 @@
 - Reference : https://pytest-with-eric.com/pytest-advanced/pytest-fastapi-testing/ 
 
 ### REST API Realtime Performance using Prometheus
-![Alt text](image-6.png)
+![Alt text](screenshot/image-6.png)
 
 ### Environment
 - <i>No module named 'sentence_transformers' based on Poetry on Python/.Venv Environment. So try to make an enviroment on Conda and builder Docker & Docker-compose.yml
@@ -16,11 +16,11 @@
 - __<i>Support Similarity Search using FAISS Model from trained sample datasets</i>__
 - <i>I'll try to make it to REST API Endpoint with building /train, /reloading the model and search</i>
 
-![Alt text](image-3.png)
+![Alt text](screenshot/image-3.png)
 
 ### Swagger for Elasticsearch
 - __<i>Support Enterprise Search using Elasticsearch Docker Instance</i>__
-![Alt text](image-4.png)
+![Alt text](screenshot/image-4.png)
 
 ## Docker build
 ```
@@ -30,7 +30,7 @@ docker build \
   --target build \
   "$(dirname "$0")/."
 ```
-![Alt text](image.png)
+![Alt text](screenshot/image.png)
 
 ## Docker run
 ```
@@ -52,7 +52,7 @@ cd $SCRIPTDIR
 source .venv/bin/activate
 uvicorn main:app --reload --port=7000 --workers 4
 ```
-![Alt text](image-1.png)
+![Alt text](screenshot/image-1.png)
 
 
 ## FastAPI with Swagger UI
@@ -62,4 +62,4 @@ Build Model/Schema with Postgres
 Build Search with Elasticsearch
 ```
 
-![Alt text](image-5.png)
+![Alt text](screenshot/image-5.png)
