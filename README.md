@@ -59,4 +59,4 @@ Build Model/Schema with Postgres
 Build Search with Elasticsearch
 ```
 
-![Alt text](image-2.png)
+![Alt text](image-5.png)

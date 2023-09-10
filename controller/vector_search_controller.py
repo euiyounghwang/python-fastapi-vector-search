@@ -20,7 +20,6 @@ v_model = V_FAISS_Example()
 ITEM_NOT_FOUND = "Item not found for id: {}"
 
 
-
 @app.get("/reloading", 
          status_code=StatusHanlder.HTTP_STATUS_200,
          description="Reload trained model", 
@@ -28,6 +27,15 @@ ITEM_NOT_FOUND = "Item not found for id: {}"
 async def get_reload_model():
     ''' Saved model and call this api to reload '''
     return {'message' : "reloading"}
+
+
+@app.get("/train", 
+         status_code=StatusHanlder.HTTP_STATUS_200,
+         description="Train the model", 
+         summary="Train the model")
+async def build_train_model():
+    ''' Train and Save the model '''
+    return {'message' : "build_train_model"}
 
 
 @app.post("/search", 
