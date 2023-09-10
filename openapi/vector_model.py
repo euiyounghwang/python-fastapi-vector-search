@@ -20,6 +20,47 @@ class V_FAISS(object):
             ['Network Access Control?'],
             ['Address']
         ]
+        
+    
+    async def reloading_model(self):
+        pass
+    
+    
+    async def train_model(self):
+        pass
+    
+    async def train_model(self):
+        pass
+    
+    async def search(self, search):
+        ''' transforming to numerical representation for search text '''
+        search_vector = self.encoder.encode(search)
+        _vector = np.array([search_vector])
+        faiss.normalize_L2(_vector)
+        logger.info("create_vector's keyword : {}, vectors : {}".format(search, _vector))
+        
+        ''' search '''
+        k = self.f_index.ntotal
+        distances, ann = self.f_index.search(_vector, k=k)
+        
+        ''' resulsts '''
+        results = pd.DataFrame({'distances': distances[0], 'ann': ann[0]})
+        logger.info("results : {}".format(results))
+        
+        ''' merge with meta datas '''
+        df = pd.merge(results, self.df, left_on='ann', right_index=True)
+        logger.info("merge : {}".format(df))
+        
+        return await self. df_transform_to_json(df)
+    
+    async def df_transform_to_json(self, df):
+        ''' transforming to json from df '''
+        list_dict = []
+        for index, row in list(df.iterrows()):
+            list_dict.append(dict(row))
+        logger.info("list_dict : {}".format(json.dumps(list_dict, indent=2)))
+        
+        return list_dict
 
 
 class V_FAISS_Example(object):
@@ -61,6 +102,7 @@ class V_FAISS_Example(object):
         return index
             
     async def df_transform_to_json(self, df):
+        ''' transforming to json from df '''
         list_dict = []
         for index, row in list(df.iterrows()):
             list_dict.append(dict(row))
@@ -68,7 +110,7 @@ class V_FAISS_Example(object):
         
         return list_dict
 
-    async def create_vector(self, search):
+    async def search(self, search):
         ''' transforming to numerical representation for search text '''
         search_vector = self.encoder.encode(search)
         _vector = np.array([search_vector])

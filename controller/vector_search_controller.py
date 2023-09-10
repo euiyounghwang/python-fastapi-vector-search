@@ -50,7 +50,7 @@ async def Vector_Search(keyword: str = "Where is your office?"):
     '''
     logger.info("vector_search_controller : {}".format(json.dumps(keyword, indent=2)))
     logger.info(await v_model.get_text_df())
-    ressult_dic = await v_model.create_vector(keyword)
+    ressult_dic = await v_model.search(keyword)
     
     if not ressult_dic:
         raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(keyword)})
