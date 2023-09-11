@@ -14,7 +14,7 @@ from repository.database import get_db
 from service.Handler.search.StatusHanlder import StatusHanlder
 
 # from openapi.repository import get_all
-from repository.repository import NoteRepository
+from repository.repository import (NoteRepository)
 import json
 
 app = APIRouter(
@@ -22,6 +22,8 @@ app = APIRouter(
 )
 
 Note_Ins_Repo = NoteRepository()
+# Note_Ins_Repo = RepositoryInterface()
+
 
 ITEM_NOT_FOUND = "Item not found for id: {}"
 ITEM_NOT_FOUND_ALL = "Item not found all"
