@@ -2,19 +2,19 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from openapi.schemas import (Item, Search, NoteSchema, NoteResponseSchema)
+from repository.schemas import (Item, Search, NoteSchema, NoteResponseSchema)
 from prometheus_client import Counter, Histogram
 from basic import api_request_counter, api_request_summary
 from injector import (logger, doc)
 
 from sqlalchemy.orm import Session
-from openapi.database import get_db
+from repository.database import get_db
 # from fastapi_pagination import LimitOffsetPage, add_pagination, paginate
 
-from controller.Handler.StatusHanlder import StatusHanlder
+from service.Handler.search.StatusHanlder import StatusHanlder
 
 # from openapi.repository import get_all
-from openapi.repository import NoteRepository
+from repository.repository import NoteRepository
 import json
 
 app = APIRouter(

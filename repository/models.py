@@ -2,7 +2,7 @@ import os
 
 from sqlalchemy import (Column, Integer, String, Table, create_engine, MetaData, UniqueConstraint, ForeignKey, TIMESTAMP, Boolean, text)
 from sqlalchemy.dialects.mysql import SMALLINT, TINYINT, BIGINT, CHAR
-from openapi.database import Base
+from repository.database import Base
 from datetime import datetime
 from pytz import timezone as tz
 from sqlalchemy.sql import func

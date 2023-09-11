@@ -1,11 +1,11 @@
 
 from sqlalchemy.orm import Session
-from openapi.models import Notes
+from repository.models import Notes
 # from openapi.schemas import NoteSchema
-import openapi.models
+import repository.models
 from injector import (logger, doc)
 import json
-from controller.Handler.StatusHanlder import StatusHanlder
+from service.Handler.search.StatusHanlder import StatusHanlder
 from sqlalchemy import and_, or_, not_
 
 

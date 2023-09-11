@@ -5,7 +5,7 @@ import json
 import faiss
 import pickle
 from injector import (logger, doc)
-from controller.Handler.StatusHanlder import StatusHanlder
+from service.Handler.search.StatusHanlder import StatusHanlder
 from sentence_transformers import SentenceTransformer
 ''' conda create --yes --quiet --name fastapi_service python==3.9 '''
 ''' conda install -c conda-forge sentence-transformers '''

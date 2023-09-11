@@ -1,14 +1,14 @@
 from fastapi import FastAPI, Request, Depends
 # from config.log_config import create_log
 from injector import (logger, doc)
-from openapi.schemas import Item, Search
+from repository.schemas import Item, Search
 import json
 from starlette.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_fastapi_instrumentator.metrics import Info
 
-import openapi.models
-from openapi.database import engine, metadata
+import repository.models
+from repository.database import engine, metadata
 
 from controller import (es_search_controller, vector_search_controller, api_controller)
 from basic import api_request_counter, api_request_summary
@@ -17,7 +17,7 @@ from basic import api_request_counter, api_request_summary
 # Add Tables
 # --
 # openapi.models.Base.metadata.drop_all(bind=engine)
-openapi.models.Base.metadata.create_all(engine)
+repository.models.Base.metadata.create_all(engine)
 
 # --
 #  Create the FastAPI client.

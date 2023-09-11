@@ -1,9 +1,9 @@
 
 from config.log_config import create_log
-from controller.Handler.SearchOmniHandler import (SearchOmniHandler)
-from controller.Handler.QueryBuilder import (QueryBuilder)
+from service.Handler.search.SearchOmniHandler import (SearchOmniHandler)
+from service.Handler.search.QueryBuilder import (QueryBuilder)
 from elasticsearch import Elasticsearch
-from controller.Util.es_utils import ES_Utils
+from service.Handler.util.es_utils import ES_Utils
 import yaml
 import json
 

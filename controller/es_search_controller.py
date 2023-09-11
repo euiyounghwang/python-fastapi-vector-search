@@ -1,6 +1,6 @@
 
 from fastapi import APIRouter
-from openapi.schemas import Item, Search
+from repository.schemas import Item, Search
 from prometheus_client import Counter, Histogram
 from basic import api_request_counter, api_request_summary
 from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject, metrics_service)
