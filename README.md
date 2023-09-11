@@ -20,6 +20,10 @@ docker run --name es8-run --network bridge -p 9209:9200 -p 9114:9114 -p 9309:930
 ### REST API Realtime Performance using Prometheus
 ![Alt text](screenshot/image-6.png)
 
+### Flow
+![Alt text](image.png)
+
+
 ### Environment
 - <i>No module named 'sentence_transformers' based on Poetry on Python/.Venv Environment. So try to make an enviroment on Conda and builder Docker & Docker-compose.yml
 
