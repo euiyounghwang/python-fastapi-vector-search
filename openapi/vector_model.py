@@ -57,7 +57,7 @@ class V_FAISS(object):
         logger.info("trained model finished ..")
         
         ''' reloading model after create trained model '''
-        self.model = await self.reloading_model()
+        self.model = self.reloading_model()
         logger.info("trained model loading ..")
         
         return StatusHanlder.HTTP_STATUS_200

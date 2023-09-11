@@ -27,6 +27,7 @@ openapi.models.Base.metadata.create_all(engine)
 # https://github.com/KenMwaura1/Fast-Api-Grafana-Starter/blob/main/src/app/db.py
 
 app = FastAPI()
+
 # instrumentator = Instrumentator(
 #     should_group_status_codes=False,
 #     should_ignore_untemplated=True,
@@ -37,6 +38,7 @@ app = FastAPI()
 #     inprogress_name="inprogress",
 #     inprogress_labels=True,
 # )
+# prometheus_fastapi_instrumentator(metric_name="fastapi-app",).Instrumentator().instrument(app).expose(app)
 Instrumentator().instrument(app).expose(app)
 
 # app.add_middleware(
