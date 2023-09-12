@@ -1,0 +1,32 @@
+{
+  "app": {
+    "mud": {
+      "host": "host.docker.internal",
+      "port": "15432",
+      "username": "postgres",
+      "password": "1234",
+      "db": "postgres"
+    },
+    "health_check": {
+      "check_translation_client": {
+        "optional": true
+      }
+    },
+    "es": {
+      "omni_es_host": "http://host.docker.internal:9209",
+      "bees_es_host": "http://localhost:9200",
+      "index" : {
+          "alias" : "omnisearch_search"
+      }
+    }
+  },
+  "server": {
+    "http_config": {
+      "default": {
+        "interface": "",
+        "port": "8088",
+        "shutdown_time": 20
+      }
+    }
+  }
+}

@@ -18,9 +18,8 @@ COPY requirements.txt deps/requirements.txt
 # Create environment
 RUN conda/bin/conda create --yes --quiet --name fn_fastapi_services && \
     /bin/bash -c 'source /app/conda/bin/activate fn_fastapi_services && \
-    PKG_VERSION=git pip install setuptools==68.0.0 && \
-    /app/conda/bin/conda install -c conda-forge sentence-transformers && \
-    /app/conda/bin/conda install -c conda-forge faiss-cpu && \
+    /app/conda/bin/conda install -c conda-forge sentence-transformers=2.2.2 && \
+    /app/conda/bin/conda install -c conda-forge faiss-cpu=1.7.4 && \
     pip install --upgrade pip && \
     pip install --no-cache-dir -r deps/requirements.txt'
 
@@ -35,6 +34,8 @@ COPY . FN-FTA-Services
 
 RUN /bin/bash -c 'source /app/conda/bin/activate fn_fastapi_services'
 
+COPY server/config.yaml /app/FN-FTA-Services
+
 RUN useradd deploy
 RUN chown -R deploy: /app/conda/envs/fn_bees_services /app/FN-FTA-Services
 
@@ -46,7 +47,7 @@ RUN chown -R deploy: /home/deploy
 
 USER deploy
 
-ENTRYPOINT ["/app/FN-FTA-Services/conda-run-tests.sh"]
+ENTRYPOINT ["/app/FN-FTA-Services/docker-run-tests.sh"]
 
 
 
@@ -54,11 +55,12 @@ ENTRYPOINT ["/app/FN-FTA-Services/conda-run-tests.sh"]
 FROM --platform=linux/amd64 python:3.6.13 as runtime
 
 WORKDIR /app
-COPY --from=environment /app .
-COPY . FN-BEES-Services
-
+COPY --from=build /app .
+COPY . FN-FTA-Services
 
 RUN /bin/bash -c 'source /app/conda/bin/activate fn_fastapi_services'
+
+COPY server/config.yaml /app/FN-FTA-Services
 
 RUN useradd deploy
 
@@ -74,9 +76,5 @@ RUN chown -R deploy: /home/deploy
 
 USER deploy
 
-#ENTRYPOINT [ "gunicorn" ]
-#CMD ["-w", "2", "-b", "0.0.0.0:8081", "basic.wsgi"]
-#EXPOSE 8081
-
-ENTRYPOINT ["/app/FN-FTA-Services/conda-run-entrypoint.sh"]
-
+EXPOSE 7000
+ENTRYPOINT ["/app/FN-FTA-Services/docker-run-entrypoints.sh"]

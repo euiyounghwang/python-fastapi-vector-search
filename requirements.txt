@@ -1,8 +1,5 @@
 elasticsearch==7.13.0
-faiss-cpu==1.7.4
-sentence-transformers== 22.2
 fastapi==0.101.1
-sqlalchemy==2.0.20
 pytest==7.4.0
 httpx==0.24.1
 pytz==2023.3
@@ -14,4 +11,6 @@ SQLAlchemy==1.4.26
 fastapi-pagination==0.12.9
 python-dotenv==1.0.0
 uvicorn==0.23.2
+gunicorn==21.2.0
 mock==5.1.0
+psycopg2-binary==2.9.7
