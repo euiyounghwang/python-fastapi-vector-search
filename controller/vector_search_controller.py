@@ -5,7 +5,7 @@ from prometheus_client import Counter, Histogram
 # from metrics_var import api_request_counter, api_request_summary
 from basic import api_request_counter, api_request_summary
 from injector import (logger, doc, SearchOmniHandlerInject, QueryBuilderInject, es_client, metrics_service)
-from service.Handler.vector.vector_model import (V_FAISS, V_FAISS_Example)
+from service.Handler.vector.VectorHanlder import (V_FAISS, V_FAISS_Example)
 # from controller.Util.es_utils import ES_Utils
 from service.Handler.search.StatusHanlder import StatusHanlder
 import json
