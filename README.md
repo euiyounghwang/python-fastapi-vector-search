@@ -21,13 +21,12 @@ docker run --name es8-run --network bridge -p 9209:9200 -p 9114:9114 -p 9309:930
 ![Alt text](screenshot/image-6.png)
 
 ### Flow
+
+![Alt text](image.png)
 - Controllers - Contains application logic and passing user input data to service
 - Services - The middleware between controller and repository. Gather data from controller, performs validation and business logic, and calling repositories for data manipulation.
 - Repositories - layer for interaction with models and performing DB operations
 - Models - common laravel model files with relationships defined
-
-![Alt text](image.png)
-
 
 ### Environment
 - <i>No module named 'sentence_transformers' based on Poetry on Python/.Venv Environment. So try to make an enviroment on Conda and builder Docker & Docker-compose.yml
