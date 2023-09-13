@@ -14,6 +14,6 @@ docker build \
 # docker build \
 #   -f "$(dirname "$0")/Dockerfile" \
 #   -t fn-vector-search-api:es \
-#   --target runtime \
+#   --target fta_runtime \
 #   "$(dirname "$0")/."
 

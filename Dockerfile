@@ -62,7 +62,7 @@ ENTRYPOINT ["/app/FN-FTA-Services/docker-run-tests.sh"]
 
 
 # Create runtime image
-FROM --platform=linux/amd64 python:3.9.0 as runtime
+FROM --platform=linux/amd64 python:3.9.0 as fta_runtime
 
 WORKDIR /app
 COPY --from=build /app .
