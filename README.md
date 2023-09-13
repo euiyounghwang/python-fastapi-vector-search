@@ -45,8 +45,14 @@ docker run --name es8-run --network bridge -p 9209:9200 -p 9114:9114 -p 9309:930
 ```
 docker build \
   -f "$(dirname "$0")/Dockerfile" \
+  -t fn-vector-search-api:test \
+  --target fta_test \
+  "$(dirname "$0")/."
+
+docker build \
+  -f "$(dirname "$0")/Dockerfile" \
   -t fn-vector-search-api:es \
-  --target build \
+  --target runtime \
   "$(dirname "$0")/."
 ```
 ![Alt text](screenshot/image.png)
@@ -54,9 +60,11 @@ docker build \
 ## Docker run
 ```
 docker run --rm --platform linux/amd64 -it -d \
-  --name fn-vector-search-api --publish 7000:7000 --expose 7000 \
+  --name fn-vector-search-api --publish 7001:7000 --expose 7000 \
+  -e DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres \
+  -e ES_HOST=http://host.docker.internal:9209 \
   --network bridge \
-  -v "$SCRIPTDIR:/app/FN-BEES-Services/" \
+  -v "$SCRIPTDIR:/app/FN-FTA-Services/" \
   fn-vector-search-api:es
 ```
 
