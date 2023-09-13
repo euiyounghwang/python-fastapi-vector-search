@@ -1,18 +1,18 @@
 version: '3'
 #docker-compose -f ./docker-compose.yml up or docker-compose up
-name: python-rest-api-search-engine
+name: python-fastapi-vector-search-engine
 services:
   fn-vector-search-api:
-    image: fn-flask-api:es
-    container_name: fn-flask-api
+    image: fn-vector-search-api:es
+    container_name: fn-vector-search-api
     build:
       context: .
       dockerfile: Dockerfile
-      target: runtime
+      target: fta_runtime
     ports:
       - 7001:7000
     volumes:
-      - ./python-flask-connexion-example-openapi3-master:/app/FN-BEES-Services
+      - ./python-fastapi-vector-search:/app/FN-FTA-Services
     restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres
@@ -21,16 +21,16 @@ services:
       - bridge
 
   fn-vector-search-api-test:
-    image: fn-flask-api:test
-    container_name: fn-flask-api-test
+    image: fn-vector-search-api:test
+    container_name: fn-vector-search-api-test
     build:
       context: .
       dockerfile: Dockerfile
-      target: test
+      target: fta_test
     ports:
       - 7002:7000
     volumes:
-      - ./python-flask-connexion-example-openapi3-master:/app/FN-BEES-Services
+      - ./python-fastapi-vector-search:/app/FN-FTA-Services
     environment:
       - DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres
       - ES_HOST=http://host.docker.internal:9209
