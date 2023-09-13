@@ -12,5 +12,6 @@ docker run -i -t --name fn-vector-search-api-test \
   --network bridge \
   -e DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres \
   -e ES_HOST=http://host.docker.internal:9209 \
+  -e RABBIT_HOST=host.docker.internal \
   -v "$SCRIPTDIR:/app/FN-FTA-Services/" \
   fn-vector-search-api:test

@@ -29,11 +29,12 @@ logger = create_log()
 doc = read_config_yaml()
 # print(doc)
 
-# Read_Doc
+# Read_Doc with arguments from Docker -e option
 hosts = os.getenv("ES_HOST", doc['app']['es']['omni_es_host'])
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:1234@{}:{}/postgres".format(doc['app']['mud']['host'],
                                                                                             doc['app']['mud']['port']
                                                                                             ))
+RABBITMQ_HOST = os.getenv('RABBIT_HOST', doc['app']['rabbitmq']['host'])
 
 es_client = Elasticsearch(hosts=hosts,
                           headers=get_headers(),

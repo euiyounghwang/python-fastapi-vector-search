@@ -18,6 +18,9 @@
       "index" : {
           "alias" : "omnisearch_search"
       }
+    },
+    "rabbitmq": {
+      "host": "localhost"
     }
   },
   "server": {

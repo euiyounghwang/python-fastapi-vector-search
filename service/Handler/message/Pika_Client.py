@@ -1,5 +1,6 @@
 
 from dotenv import load_dotenv
+from injector import RABBITMQ_HOST
 import pika
 import os
 
@@ -10,7 +11,7 @@ class PikaClient:
         self.publish_queue_name = os.getenv('PUBLISH_QUEUE', 'foo_publish_queue')
         self.credentials = pika.PlainCredentials('guest', 'guest')
         # self.parameters = pika.URLParameters('amqp://euiyoung.hwang:1234@{}:25672'.format(str(os.getenv('RABBIT_HOST', '127.0.0.1'))))
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.getenv('RABBIT_HOST', '127.0.0.1'), 
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST, 
                                                                             port=5672, 
                                                                             credentials=self.credentials, 
                                                                             heartbeat=6000))
