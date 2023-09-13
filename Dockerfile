@@ -15,6 +15,7 @@ RUN echo 'conda ==4.7.12' > /app/conda/conda-meta/pinned
 
 # COPY .condarc /root/.condarc
 COPY requirements.txt deps/requirements.txt
+COPY requirements-test.txt deps/requirements-test.txt
 COPY environment_search.lst deps/environment_search.lst
 
 # Create environment
@@ -26,7 +27,8 @@ RUN conda/bin/conda create --yes --quiet --name fn_fta_services python=3.9.0 && 
     /app/conda/bin/conda install -c conda-forge sentence-transformers=2.2.2 && \
     /app/conda/bin/conda install -c conda-forge faiss-cpu=1.7.4 && \
     pip install --upgrade pip && \
-    PKG_VERSION=git pip install --no-deps -r deps/requirements.txt --ignore-installed'
+    PKG_VERSION=git pip install --no-deps -r deps/requirements.txt --ignore-installed && \
+    PKG_VERSION=git pip install --no-deps -r deps/requirements-test.txt --ignore-installed'
 
 
 
@@ -38,15 +40,10 @@ WORKDIR /app
 COPY --from=fta_environment /app .
 COPY . FN-FTA-Services
 
-# RUN /bin/bash -c 'source /app/conda/bin/activate fn_fta_services && \
-#     /app/conda/bin/conda install -c conda-forge sentence-transformers=2.2.2 && \
-#     /app/conda/bin/conda install -c conda-forge faiss-cpu=1.7.4 && \
-#     pip install --no-cache-dir -r deps/requirements.txt'
-
 # RUN /bin/bash -c 'source /app/conda/bin/activate fn_fta_services'
 
 RUN useradd deploy
-RUN chown -R deploy: /app/conda/envs/fn_fta_services /app/FN-FTA-Services
+# RUN chown -R deploy: /app/conda/envs/fn_fta_services /app/FN-FTA-Services
 
 # RUN mkdir -p test-reports/junit/
 RUN mkdir -p /FN-FTA-Services/test-reports/junit/
