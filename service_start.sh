@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+# vagrant ssh -- -L 9901:localhost:9201 -L 9000:localhost:9200 -L 5602:localhost:5601 -L 5603:localhost:5602 -L 5432:localhost:5432 -L 8080:localhost:8080 -L 8081:localhost:8081
+
 # SCRIPTDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 # cd $SCRIPTDIR
 # source .venv/bin/activate
