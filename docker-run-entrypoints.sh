@@ -14,6 +14,6 @@ set -ex
 # --
 # Conda v.
 # --
-source /app/conda/bin/activate fn_fastapi_services
+source /app/conda/bin/activate fn_fta_services
 cd /app/FN-FTA-Services
-exec uvicorn main:app --reload --host=0.0.0.0 --port=7000 --workers 4
+exec uvicorn main:app --host=0.0.0.0 --port=7000 --workers 4

@@ -1,0 +1,42 @@
+version: '3'
+#docker-compose -f ./docker-compose.yml up or docker-compose up
+name: python-rest-api-search-engine
+services:
+  fn-vector-search-api:
+    image: fn-flask-api:es
+    container_name: fn-flask-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    ports:
+      - 7001:7000
+    volumes:
+      - ./python-flask-connexion-example-openapi3-master:/app/FN-BEES-Services
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres
+      - ES_HOST=http://host.docker.internal:9209
+    networks:
+      - bridge
+
+  fn-vector-search-api-test:
+    image: fn-flask-api:test
+    container_name: fn-flask-api-test
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+    ports:
+      - 7002:7000
+    volumes:
+      - ./python-flask-connexion-example-openapi3-master:/app/FN-BEES-Services
+    environment:
+      - DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres
+      - ES_HOST=http://host.docker.internal:9209
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    driver: bridge

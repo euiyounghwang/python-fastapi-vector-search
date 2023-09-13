@@ -1,7 +1,6 @@
 {
   "app": {
     "mud": {
-      "_host": "host.docker.internal",
       "host": "localhost",
       "port": "15432",
       "username": "postgres",
@@ -14,7 +13,6 @@
       }
     },
     "es": {
-      "_omni_es_host": "http://host.docker.internal:9209",
       "omni_es_host": "http://localhost:9209",
       "bees_es_host": "http://localhost:9200",
       "index" : {
