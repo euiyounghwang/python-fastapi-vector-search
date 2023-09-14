@@ -2,6 +2,28 @@ version: '3'
 #docker-compose -f ./docker-compose.yml up or docker-compose up
 name: python-fastapi-vector-search-engine
 services:
+  
+  # rabbit1:
+  #       image: "rabbitmq:3-management"
+  #       hostname: rabbit1
+  #       environment:
+  #           RABBITMQ_ERLANG_COOKIE: "TESTVOLUME"
+  #           RABBITMQ_DEFAULT_USER: "guest"
+  #           RABBITMQ_DEFAULT_PASS: "guest"
+  #           RABBITMQ_DEFAULT_VHOST: "/"
+  #       ports:
+  #           - "15672:15672"
+  #           - "5672:5672"
+  #       labels:
+  #           NAME: "rabbitmq1"
+  #       networks:
+  #           - back
+  #       tty: true
+  #       volumes:
+  #           - rabbit1:/var/lib/rabbitmq
+  #           - ./conf/:/etc/rabbitmq/
+  #       command: bash -c "sleep 10; rabbitmq-server;"
+        
   fn-vector-search-api:
     image: fn-vector-search-api:es
     container_name: fn-vector-search-api

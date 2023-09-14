@@ -11,6 +11,7 @@ docker run --rm --platform linux/amd64 -it -d \
   -e DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres \
   -e ES_HOST=http://host.docker.internal:9209 \
   -e RABBIT_HOST=host.docker.internal \
+  -e PUBLISH_QUEUE=fastapi_publish_queue \
   -v "$SCRIPTDIR:/app/FN-FTA-Services/" \
   fn-vector-search-api:es
 

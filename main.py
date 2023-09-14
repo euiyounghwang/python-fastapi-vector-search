@@ -6,11 +6,17 @@ import json
 from starlette.middleware.cors import CORSMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator, metrics
 from prometheus_fastapi_instrumentator.metrics import Info
+import asyncio
 
 import repository.models
 from repository.database import engine, metadata
 
-from controller import (es_search_controller, vector_search_controller, api_controller, task_controller)
+from controller import (es_search_controller, 
+                        vector_search_controller, 
+                        api_controller, 
+                        task_controller, 
+                        message_controller
+                        )
 from basic import api_request_counter, api_request_summary
 from service.Handler.message.rabbitmq_handler import RabbitMQApp
 
@@ -23,15 +29,20 @@ repository.models.Base.metadata.create_all(engine)
 # --
 #  Create the FastAPI client.
 # --
-rabbitmq = RabbitMQApp()
-
-@rabbitmq.on_event('startup')
-async def startup():
-    logger.info('startup starting...')
     
 # https://github.com/KenMwaura1/Fast-Api-Grafana-Starter/blob/main/src/app/db.py
 
 app = FastAPI()
+
+
+rabbitmq = RabbitMQApp()
+
+@app.on_event('startup')
+async def startup():
+    logger.info('@@startup starting...@@')
+    loop = asyncio.get_running_loop()
+    task = loop.create_task(rabbitmq.pika_client.consume(loop))
+    await task
 
 # instrumentator = Instrumentator(
 #     should_group_status_codes=False,
@@ -82,3 +93,4 @@ app.include_router(es_search_controller.app, tags=["Search"], )
 app.include_router(vector_search_controller.app, tags=["FAISS"], )
 app.include_router(api_controller.app, tags=["Note"], )
 app.include_router(task_controller.app, tags=["Task"], )
+app.include_router(message_controller.app, tags=["Message"], )

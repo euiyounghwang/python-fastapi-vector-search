@@ -79,3 +79,7 @@ class NoteDB(NoteSchema):
     
 class Note_Sub_Entity(BaseModel):
     pass
+
+
+class MessageSchema(BaseModel):
+    message: str
