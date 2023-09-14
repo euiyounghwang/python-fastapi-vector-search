@@ -47,13 +47,13 @@ class PikaClient:
         channel = await connection.channel()
         queue = await channel.declare_queue(os.getenv('PUBLISH_QUEUE', 'fastapi_publish_queue'))
 
-        await queue.consume(self.process_incoming_message, no_ack=True)
+        await queue.consume(self.process_incoming_message, no_ack=False)
         return connection
     
     
     async def process_incoming_message(self, message):
         """Processing incoming message from RabbitMQ"""
-        message.ack()
+        # message.ack()
         body = message.body
         self.logger.info('Received message')
         if body:

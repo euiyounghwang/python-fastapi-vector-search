@@ -3,7 +3,7 @@ import json
 import pika, socket
 import uuid
 
-def start_rmq_handler(q_name, id, password, hosts="localhost"):
+def start_rmq_handler(q_name, id, password, json_msg, hosts="localhost"):
 
     try:
         credentials = pika.PlainCredentials(id, password)
@@ -16,9 +16,7 @@ def start_rmq_handler(q_name, id, password, hosts="localhost"):
 
         msg_props = pika.BasicProperties()
         msg_props.content_type = "application/json"
-        json_msg = {
-            "entity_id" : "kraken_document-289857"
-        }
+       
         msg = json.dumps(json_msg)
         # channel.queue_declare(queue=q_name, durable=True)
         channel.queue_declare(queue=q_name)
@@ -29,5 +27,8 @@ def start_rmq_handler(q_name, id, password, hosts="localhost"):
     finally:
         connection.close()
 
+json_msg = {
+          "entity_id" : "kraken_document-289857"
+}
 login = ['guest', 'guest']
-start_rmq_handler('fastapi_publish_queue', login[0], login[1])
+start_rmq_handler('fastapi_publish_queue', login[0], login[1], json_msg)
