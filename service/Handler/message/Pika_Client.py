@@ -47,7 +47,7 @@ class PikaClient:
         channel = await connection.channel()
         queue = await channel.declare_queue(os.getenv('PUBLISH_QUEUE', 'fastapi_publish_queue'))
 
-        await queue.consume(self.process_incoming_message, no_ack = False)
+        await queue.consume(self.process_incoming_message, no_ack=True)
         return connection
     
     

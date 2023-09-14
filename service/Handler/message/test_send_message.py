@@ -20,7 +20,8 @@ def start_rmq_handler(q_name, id, password, hosts="localhost"):
             "entity_id" : "kraken_document-289857"
         }
         msg = json.dumps(json_msg)
-        channel.queue_declare(queue=q_name, durable=False)
+        # channel.queue_declare(queue=q_name, durable=True)
+        channel.queue_declare(queue=q_name)
         channel.basic_publish(exchange='', routing_key=q_name, body=msg , properties=msg_props)
 
         print("[{}] Sent..'".format(msg))

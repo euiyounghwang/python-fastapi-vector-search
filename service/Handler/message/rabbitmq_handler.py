@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from service.Handler.message.Pika_Client import PikaClient
 from injector import logger
+import json
 
 class RabbitMQApp(FastAPI):
 
@@ -12,4 +13,4 @@ class RabbitMQApp(FastAPI):
     @classmethod
     def log_incoming_message(cls, message: dict):
         """Method to do something meaningful with the incoming message"""
-        logger.info('Here we got incoming message : {}'.format(message))
+        logger.info('Here we got incoming message : {}'.format(json.dumps(message, indent=2)))
