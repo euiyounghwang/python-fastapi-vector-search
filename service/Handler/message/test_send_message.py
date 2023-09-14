@@ -1,7 +1,9 @@
 import json
-
+# from injector import RABBIT_HOST
 import pika, socket
 import uuid
+import argparse
+from dotenv import load_dotenv
 
 def start_rmq_handler(q_name, id, password, json_msg, hosts="localhost"):
 
@@ -27,8 +29,19 @@ def start_rmq_handler(q_name, id, password, json_msg, hosts="localhost"):
     finally:
         connection.close()
 
-json_msg = {
-          "entity_id" : "kraken_document-289857"
-}
-login = ['guest', 'guest']
-start_rmq_handler('fastapi_publish_queue', login[0], login[1], json_msg)
+
+if __name__ == '__main__':
+    load_dotenv()
+    parser = argparse.ArgumentParser(description="Index into Elasticsearch using this script")
+    parser.add_argument('-e', '--es', dest='es', default="localhost", required=False, help='host target')
+    args = parser.parse_args()
+
+    if args.es:
+        host = args.es
+
+    print('host - ', host)
+    json_msg = {
+            "entity_id" : "kraken_document-289857"
+    }
+    login = ['guest', 'guest']
+    start_rmq_handler('fastapi_publish_queue', login[0], login[1], json_msg, hosts=host)
