@@ -19,7 +19,7 @@ rabbitmq = RabbitMQApp()
 @app.post('/send-message')
 async def send_message(payload: MessageSchema, request: Request):
     # request_json = {k : v for k, v in request}
-    logger.info(request)
+    logger.info(payload)
     rabbitmq.pika_client.send_message(
         {"message": payload.message}
     )
