@@ -34,13 +34,13 @@ services:
     ports:
       - 7001:7000
     volumes:
-      - ./python-fastapi-vector-search:/app/FN-FTA-Services
+      - ${PROJECTS_DIR}/python-fastapi-vector-search:/app/FN-FTA-Services
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres
-      - ES_HOST=http://host.docker.internal:9209
-      - RABBIT_HOST=host.docker.internal
-      - PUBLISH_QUEUE=fastapi_publish_queue
+      - DATABASE_URL=${DATABASE_URL}
+      - ES_HOST=${ES_HOST}
+      - RABBIT_HOST=${RABBIT_HOST}
+      - PUBLISH_QUEUE=${PUBLISH_QUEUE}
     networks:
       - bridge
 
@@ -54,12 +54,12 @@ services:
     ports:
       - 7002:7000
     volumes:
-      - ./python-fastapi-vector-search:/app/FN-FTA-Services
+      - ${PROJECTS_DIR}/python-fastapi-vector-search:/app/FN-FTA-Services
     environment:
-      - DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres
-      - ES_HOST=http://host.docker.internal:9209
-      - RABBIT_HOST=host.docker.internal
-      - PUBLISH_QUEUE=fastapi_publish_queue
+      - DATABASE_URL=${DATABASE_URL}
+      - ES_HOST=${ES_HOST}
+      - RABBIT_HOST=${RABBIT_HOST}
+      - PUBLISH_QUEUE=${PUBLISH_QUEUE}
     networks:
       - bridge
 
