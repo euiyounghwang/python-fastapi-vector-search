@@ -62,7 +62,7 @@ ENTRYPOINT ["/app/FN-FTA-Services/docker-run-tests.sh"]
 FROM --platform=linux/amd64 python:3.9.0 as fta_runtime
 
 WORKDIR /app
-COPY --from=build /app .
+COPY --from=fta_environment /app .
 COPY . FN-FTA-Services
 
 RUN /bin/bash -c 'source /app/conda/bin/activate fn_fta_services'

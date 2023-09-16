@@ -35,6 +35,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:1234@{}:{}/postg
                                                                                             doc['app']['mud']['port']
                                                                                             ))
 RABBITMQ_HOST = os.getenv('RABBIT_HOST', doc['app']['rabbitmq']['host'])
+print('@@RABBIT ', RABBITMQ_HOST)
 
 es_client = Elasticsearch(hosts=hosts,
                           headers=get_headers(),
