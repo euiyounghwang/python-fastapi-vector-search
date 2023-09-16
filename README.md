@@ -19,6 +19,19 @@ docker run --name es8-run --network bridge -p 9209:9200 -p 9114:9114 -p 9309:930
 - RabbitMQ
 ```
 docker run --name rabbitmq -e RABBITMQ_DEFAULT_USER=euiyoung.hwang -e RABBITMQ_DEFAULT_PASS=1234 -p 5672:5672 -p 15672:15672 -p 25672:25672 rabbitmq:3.12-management
+- Ubutu Docker Install
+sudo wget -qO- http://get.docker.com/ | sh  (Install All-in-One) Othewise, 
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+sudo echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo docker version
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo systemctl enable containerd
+sudo systemctl start containerd
 ```
 
 ### REST API Realtime Performance using Prometheus
