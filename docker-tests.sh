@@ -14,5 +14,8 @@ docker run -i -t --name fn-vector-search-api-test \
   -e ES_HOST=http://host.docker.internal:9209 \
   -e RABBIT_HOST=host.docker.internal \
   -e PUBLISH_QUEUE=fastapi_publish_queue \
+  -e RADIS_HOST=host.docker.internal \
+  -e RADIS_PORT=6379 \
+  -e REDIS_DATABASE=0 \
   -v "$SCRIPTDIR:/app/FN-FTA-Services/" \
   fn-vector-search-api:test

@@ -1,7 +1,9 @@
 
 from config.log_config import create_log
+from config import config
 from service.Handler.search.SearchOmniHandler import (SearchOmniHandler)
 from service.Handler.search.QueryBuilder import (QueryBuilder)
+from service.Handler.message.redis_handler import Cache
 from elasticsearch import Elasticsearch
 from service.Handler.util.es_utils import ES_Utils
 from dotenv import load_dotenv
@@ -30,14 +32,28 @@ doc = read_config_yaml()
 # print(doc)
 
 # Read_Doc with arguments from Docker -e option
+"""
 hosts = os.getenv("ES_HOST", doc['app']['es']['omni_es_host'])
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:1234@{}:{}/postgres".format(doc['app']['mud']['host'],
                                                                                             doc['app']['mud']['port']
                                                                                             ))
 RABBITMQ_HOST = os.getenv('RABBIT_HOST', doc['app']['rabbitmq']['host'])
-print('@@RABBIT ', RABBITMQ_HOST)
+"""
 
-es_client = Elasticsearch(hosts=hosts,
+global_settings = config.Settings(logger, doc)
+# --
+# RabbitMQ
+DATABASE_URL = global_settings.get_DATABASE_URL()
+RABBITMQ_HOST = global_settings.get_RABBITMQ_HOST()
+# --
+
+# --
+# Redis
+RedisHanlderInject = global_settings.get_REDIS_HOST()
+Redis_Cache = Cache(logger, doc, RedisHanlderInject)
+# --
+
+es_client = Elasticsearch(hosts=global_settings.get_Hosts(),
                           headers=get_headers(),
                           verify_certs=False,
                           timeout=600

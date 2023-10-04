@@ -15,7 +15,8 @@ from controller import (es_search_controller,
                         vector_search_controller, 
                         api_controller, 
                         task_controller, 
-                        message_controller
+                        message_controller,
+                        redis_controller
                         )
 from basic import api_request_counter, api_request_summary
 from service.Handler.message.rabbitmq_handler import RabbitMQApp
@@ -38,12 +39,17 @@ app = FastAPI()
 rabbitmq = RabbitMQApp()
 
 @app.on_event('startup')
-async def startup():
-    logger.info('@@startup starting...@@')
+async def rabbitmq_event():
+    logger.info('@@rabbitmq_event starting...@@')
     loop = asyncio.get_running_loop()
     task = loop.create_task(rabbitmq.pika_client.consume(loop))
     await task
 
+
+@app.on_event("startup")
+async def kafka_event():
+    logger.info('@@kafka_event starting...@@')
+    
 # instrumentator = Instrumentator(
 #     should_group_status_codes=False,
 #     should_ignore_untemplated=True,
@@ -94,3 +100,4 @@ app.include_router(vector_search_controller.app, tags=["FAISS"], )
 app.include_router(api_controller.app, tags=["Note"], )
 app.include_router(task_controller.app, tags=["Task"], )
 app.include_router(message_controller.app, tags=["Message"], )
+app.include_router(redis_controller.app, tags=["Redis"], )

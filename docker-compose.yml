@@ -41,6 +41,9 @@ services:
       - ES_HOST=http://host.docker.internal:9209
       - RABBIT_HOST=host.docker.internal
       - PUBLISH_QUEUE=fastapi_publish_queue
+      - RADIS_HOST=host.docker.internal
+      - RADIS_PORT=6379
+      - REDIS_DATABASE=0
     networks:
       - bridge
 
@@ -60,6 +63,9 @@ services:
       - ES_HOST=http://host.docker.internal:9209
       - RABBIT_HOST=host.docker.internal
       - PUBLISH_QUEUE=fastapi_publish_queue
+      - RADIS_HOST=host.docker.internal
+      - RADIS_PORT=6379
+      - REDIS_DATABASE=0
     networks:
       - bridge
 
