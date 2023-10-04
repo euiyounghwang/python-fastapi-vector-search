@@ -5,6 +5,7 @@ import random
 from retry import retry
 
 class Cache:
+   
    def __init__(self, logger, doc, RedisHanlderInject):
       self.time_to_expire_s=180
       self.client = RedisHanlderInject
