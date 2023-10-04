@@ -5,11 +5,14 @@ from injector import (logger, doc, Redis_Cache)
 from service.Handler.message.redis_handler import Cache
 from fastapi.responses import JSONResponse
 from fastapi import status
+import json
 
 app = APIRouter(
     # prefix="/redis",
     responses={404: {"description": "Page not found"}}
 )
+
+ITEM_NOT_FOUND = "Item not found for id: {}"
 
 @app.get("/Redis", 
          status_code=StatusHanlder.HTTP_STATUS_200,
@@ -25,12 +28,12 @@ async def redis_get_keys():
 	}
     """
     try:
-        all_datas = {}
-        
-        for k in Redis_Cache.get_keys_all():
-            all_datas.update({k : Redis_Cache.get_key(k)})
-            
-        return {"data" : all_datas}
+        all_datas = {k : Redis_Cache.get_key(k) for k in Redis_Cache.get_keys_all()}
+        response_json = {"data" : all_datas}
+        print(all_datas, type(all_datas))
+        logger.info('response - {}'.format(json.dumps(response_json, indent=2)))
+        return response_json
+    
     except Exception as e:
         # raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ex.args})
         logger.error(e)
@@ -53,3 +56,14 @@ async def redis_set_keys(key, value):
         return {"data" : Redis_Cache.get_key(key)}
     except Exception as ex:
         raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ex.args})
+    
+    
+@app.delete("/Redis/{id}", 
+          status_code=StatusHanlder.HTTP_STATUS_200,
+          description="Delete key", 
+          summary="Delete key")
+async def redis_delete_key(id):
+    if Redis_Cache.get_key(id):
+        Redis_Cache.delete_key(id)
+        return {'data': 'Item: {} was deleted successfully'.format(id)}
+    raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(id)})
