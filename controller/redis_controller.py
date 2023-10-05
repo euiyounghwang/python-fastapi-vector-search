@@ -6,6 +6,7 @@ from service.Handler.message.redis_handler import Cache
 from fastapi.responses import JSONResponse
 from fastapi import status
 import json
+from repository.schemas import RedisResponseSchema
 
 app = APIRouter(
     # prefix="/redis",
@@ -16,6 +17,7 @@ ITEM_NOT_FOUND = "Item not found for id: {}"
 
 @app.get("/Redis", 
          status_code=StatusHanlder.HTTP_STATUS_200,
+         response_model=RedisResponseSchema,
          description="Search all key & value from Redis", 
          summary="Search all key & value from Redis")
 async def redis_get_keys():
@@ -28,8 +30,11 @@ async def redis_get_keys():
 	}
     """
     try:
-        all_datas = {k : Redis_Cache.get_key(k) for k in Redis_Cache.get_keys_all()}
-        response_json = {"data" : all_datas}
+        # all_datas = {k : dict(json.loads(await Redis_Cache.get_json_key(k))) for k in await Redis_Cache.get_keys_all()}
+        all_datas = {k : dict(json.loads(await Redis_Cache.get_json_key(k))) for k in await Redis_Cache.get_keys_all()}
+        all_datas = await Redis_Cache.transform_to_pydantic_with_gap(all_datas)
+        print('all_datas', all_datas)
+        response_json = {'Total' : len(all_datas), 'Results': all_datas}
         print(all_datas, type(all_datas))
         logger.info('response - {}'.format(json.dumps(response_json, indent=2)))
         return response_json
@@ -52,8 +57,11 @@ async def redis_get_keys():
           summary="Set key & value to Redis")
 async def redis_set_keys(key, value):
     try:
-        Redis_Cache.set_key(key, value)
-        return {"data" : Redis_Cache.get_key(key)}
+        # Redis_Cache.set_key(key, value)
+        Redis_Cache.set_json_key(key, value)
+        response_json = {key : await Redis_Cache.get_key(key)}
+        logger.info('response - {}'.format(json.dumps(response_json, indent=2)))
+        return {"data" : response_json }
     except Exception as ex:
         raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ex.args})
     
@@ -63,7 +71,7 @@ async def redis_set_keys(key, value):
           description="Delete key", 
           summary="Delete key")
 async def redis_delete_key(id):
-    if Redis_Cache.get_key(id):
+    if await Redis_Cache.get_key(id):
         Redis_Cache.delete_key(id)
         return {'data': 'Item: {} was deleted successfully'.format(id)}
     raise HTTPException(status_code=StatusHanlder.HTTP_STATUS_404, detail={'message': ITEM_NOT_FOUND.format(id)})

@@ -72,6 +72,18 @@ class NoteResponse(NoteSchema):
 class NoteResponseSchema(BaseModel):
     Total: int
     Results: List[NoteResponse]
+    
+    
+class RedisResponse(BaseModel):
+    KEY: str
+    REQUEST_USER_ID: str
+    OBJECT_V: str
+    INPUT_DATE: str
+    GAP: float
+    
+class RedisResponseSchema(BaseModel):
+    Total: int
+    Results: List[RedisResponse]    
 
 
 class NoteDB(NoteSchema):

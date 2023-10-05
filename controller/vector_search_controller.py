@@ -16,7 +16,7 @@ app = APIRouter(
 )
 
 ''' test FAISS model '''
-v_model = V_FAISS_Example()
+# v_model = V_FAISS_Example()
 f_model = V_FAISS()
 
 ITEM_NOT_FOUND = "Item not found for id: {}"
