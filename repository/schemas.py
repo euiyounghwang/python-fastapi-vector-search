@@ -79,7 +79,7 @@ class RedisResponse(BaseModel):
     REQUEST_USER_ID: str
     OBJECT_V: str
     INPUT_DATE: str
-    GAP: float
+    EXPIRED_SECONDS: float
     
 class RedisResponseSchema(BaseModel):
     Total: int

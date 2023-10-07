@@ -27,10 +27,10 @@ class Cache:
       results = []
       for k, v in all_datas.items():
          print('#$%$', k, v)
-         reset_all_datas = v
+         # reset_all_datas = v
          delta = datetime.now() - datetime.strptime(all_datas.get(k)['INPUT_DATE'], "%Y-%m-%d %H:%M:%S")
-         reset_all_datas.update({"KEY" :  k, "GAP" : float(delta.seconds/60)})  
-         results.append(reset_all_datas) 
+         v.update({"KEY" :  k, "EXPIRED_SECONDS" : float(delta.seconds/60)})  
+         results.append(v) 
       return results
       
    @retry(ConnectionResetError, delay=0.1, tries=5)
