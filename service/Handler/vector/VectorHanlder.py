@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import json
-import faiss
+import faiss, time
 import pickle
 from injector import (logger, doc)
 from service.Handler.search.StatusHanlder import StatusHanlder
@@ -64,6 +64,7 @@ class V_FAISS(object):
     
     async def search(self, search):
         ''' transforming to numerical representation for search text '''
+        t=time.time()
         search_vector = self.encoder.encode(search)
         _vector = np.array([search_vector])
         faiss.normalize_L2(_vector)
@@ -71,6 +72,7 @@ class V_FAISS(object):
         
         k = self.model.ntotal
         distances, ann = self.model.search(_vector, k=k)
+        logger.info('>>>> Results in Total Time: {}'.format(time.time()-t))
             
         ''' resulsts '''
         results = pd.DataFrame({'distances': distances[0], 'ann': ann[0]})
