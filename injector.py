@@ -2,7 +2,7 @@
 from config.log_config import create_log
 from config import config
 from service.Handler.search.SearchOmniHandler import (SearchOmniHandler)
-from service.Handler.search.QueryBuilder import (QueryBuilder)
+from service.Handler.search.QueryBuilder import (QueryBuilder, QueryVectorBuilder)
 from service.Handler.message.redis_handler import Cache
 from elasticsearch import Elasticsearch
 from service.Handler.util.es_utils import ES_Utils
@@ -61,4 +61,5 @@ es_client = Elasticsearch(hosts=global_settings.get_Hosts(),
 
 SearchOmniHandlerInject = SearchOmniHandler(es_client, logger, doc['app'])
 QueryBuilderInject = QueryBuilder(es_client, logger, doc['app'])
+QueryVectorBuilderInject = QueryVectorBuilder(es_client, logger, doc['app'])
 metrics_service = ES_Utils(logger, doc, es_client)

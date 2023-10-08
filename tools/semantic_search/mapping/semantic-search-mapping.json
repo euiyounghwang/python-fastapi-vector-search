@@ -41,6 +41,12 @@
           "vector":{
              "type":"float"
           },
+          "text_vector" : {
+            "type": "dense_vector",
+            "dims": 768,
+            "index": true,
+            "similarity": "l2_norm"
+          },
           "my_vector":{
              "type":"dense_vector",
              "dims":3,

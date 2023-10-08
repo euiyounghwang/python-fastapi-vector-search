@@ -1,4 +1,6 @@
 
+import json
+import numpy as np
 
 class QueryBuilder:
     # @inject(
@@ -138,6 +140,64 @@ class QueryBuilder:
         self.add_aggregations(oas_query)
 
         # self.logger.info('QueryBuilder:oas_query_build - {}'.format(json.dumps(self.es_query, indent=2)))
+
+        return self.es_query
+
+
+class QueryVectorBuilder:
+    # @inject(
+    #     es_client=ElasticsearchConnection,
+    # )
+    def __init__(self, es_client, logger, config):
+        self.es_client = es_client
+        self.logger = logger
+        self.es_query = {}
+        self.must_clauses = []
+        self.should_clauses = []
+        self.filter_clauses = []
+        self.query_string = ""  # ES query string
+        self.highlight_clauses = {}
+        self.config = config
+        # self.OMNI_INDEX_ALIAS = self.config["es"]["index"]["alias"]
+ 
+    def build_query(self, oas_query=None, pit_id=None, search_after=None):
+        
+        oas_query = np.array(oas_query).tolist()
+                
+        self.filter_clauses = [{
+            "bool": {
+                "must": []
+            }
+        }]
+        
+        self.es_query = {
+            "track_total_hits": True,
+            "_source": ["metadata", "text", "title"], 
+            "query" : {
+                "bool" : {
+                    "must": self.must_clauses,
+                    "should" : self.should_clauses,
+                    "filter": self.filter_clauses
+                }
+            },
+            "knn": {
+                "field": "text_vector",
+                "query_vector": oas_query,
+                "k": 10,
+                "num_candidates": 100
+            },
+            # "size" : oas_query.get("size", 1),
+            "pit": {
+                "keep_alive": "30m",
+                "id": pit_id
+            }
+        }
+
+        # self.add_highlighting()
+        # self.add_pagination(search_after)
+        # self.add_aggregations(oas_query)
+
+        self.logger.info('QueryVectorBuilder:oas_query_build - {}'.format(json.dumps(self.es_query, indent=2)))
 
         return self.es_query
 

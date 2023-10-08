@@ -26,7 +26,7 @@ from elasticsearch.helpers import bulk
 # from ...config.log_config import create_log
 
 # logger = create_log()
-
+MAX_BYTES = 102400
 
 @dataclass
 class Paths:
@@ -73,8 +73,20 @@ def management_index(es, index_name):
     print('created index : {}'.format(index_name))
 
 
+
+def Get_Buffer_Length(docs):
+    """
+    :param docs:
+    :return:
+    """
+    max_len = 0
+    for doc in docs:
+        max_len += len(str(doc))
+
+    return max_len
+
 # Compare this sentence_transformers with langchain vector
-def build_vector_from_sentence_transformers(documents, index_name):
+def build_vector_to_index(es, documents, index_name, embedding_type):
     '''
     title: doc.metadata['title']
     text : doc.page_content
@@ -82,31 +94,80 @@ def build_vector_from_sentence_transformers(documents, index_name):
     'title': 'Meditations'}
     '''
     print(len(documents))
-    embeddings = []
+    actions = []
     trained_model = 'paraphrase-mpnet-base-v2'
     # trained_model = 'sentence-transformers/xlm-r-100langs-bert-base-nli-stsb-mean-tokens'
-    for i, doc in enumerate(documents):
-        # print('doc : {}'.format(doc.page_content))
-        c_vector = SentenceTransformer(trained_model).encode(doc.page_content)
-        # _vector = np.array([search_vector])
-        print(i, c_vector)
-        embeddings.append(
-            {
-                "_index": index_name,
-                "_id": i,
-                "_source": {        
-                    "title": doc.metadata['title'],
-                    "vector" : c_vector,
-                    "metadata" : doc.metadata
-                }
-            }
+    if embedding_type =='es_langchain':
+        embeddings = HuggingFaceEmbeddings()
+        # c_vector = embeddings.embed_query(doc.page_content)
+        db = ElasticVectorSearch.from_documents(
+                    documents,
+                    embeddings,
+                    elasticsearch_url="http://localhost:9209",
+                    index_name=index_name,
+                    # ssl_verify={
+                    # "verify_certs": True,
+                    # "basic_auth": ("elastic", "xxx"),
+                    # "ca_certs": "./data/xxxx"
+                    #  },
         )
+        print(json.dumps(db.client.info(), indent=2))
+        query = "What did the president say about Ketanji Brown Jackson"
+        docs = db.similarity_search(query)
+        print(docs)
+        return
     
-    # es.bulk(body=embeddings)
-    bulk(es, embeddings)
-    print(json.dumps(es.info(), indent=2))
+    elif embedding_type =='es_v':
+        for i, doc in enumerate(documents):
+            # print('doc : {}'.format(doc.page_content))
+            c_vector = SentenceTransformer(trained_model).encode(doc.page_content)
+            c_vector = np.array(c_vector)
+            # _vector = np.array([search_vector])
+            # print(i, c_vector)
+            print(i, doc.metadata['title'])
+            '''
+            bulk (from elasticsearch.helpers import bulk)
+            bulk(es, actions)
+            actions.append(
+                {
+                    "_index": index_name,
+                    "_id": i,
+                    "_source": {        
+                        "title": doc.metadata['title'],
+                        "vector" : c_vector,
+                        "metadata" : doc.metadata
+                    }
+                }
+            )
+            '''
             
+            doc = {
+                 "title": doc.metadata['title'],
+                 "vector" : c_vector,
+                 "metadata" : doc.metadata,
+                 "text" : doc.page_content,
+                 "text_vector" : c_vector,
+            }
+            actions.append({'index': {'_index': index_name}})
+            actions.append(doc)
+            
+            if Get_Buffer_Length(actions) > MAX_BYTES:
+                response = es.bulk(body=actions)
+                # bulk(es, actions)
+                print('Get_Buffer_Length(actions) > MAX_BYTES : Push into ES..')
+                del actions[:]
+                if response['errors']:
+                    raise Exception(response)
 
+        # --
+        # Remains
+        response = es.bulk(body=actions)
+        # bulk(es, actions)
+        print(json.dumps(es.info(), indent=2))
+        print('Finshed & Push into ES..')
+        del actions[:]
+        # --
+        
 def main(es, index_name):
     """
     Vector search provides the foundation for implementing semantic search for text or similarity search for images, videos, or audio.
@@ -122,7 +183,7 @@ def main(es, index_name):
     )
     documents = text_splitter.split_documents(data)
     # print(len(documents))
-    documents = documents[:2]
+    # documents = documents[:2]
 
     # embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
     
@@ -142,7 +203,8 @@ def main(es, index_name):
     
     # --
     # Sentence_transformer
-    build_vector_from_sentence_transformers(documents, index_name)
+    # build_vector_to_index(documents, index_name, embedding_type='es_langchain')
+    build_vector_to_index(es, documents, index_name, embedding_type='es_v')
     # --
     
 

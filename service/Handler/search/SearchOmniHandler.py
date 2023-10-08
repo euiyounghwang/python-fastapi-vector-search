@@ -1,6 +1,7 @@
 
 import json
-
+from elasticsearch import TransportError
+import elasticsearch.exceptions
 
 class SearchOmniHandler(object):
     
