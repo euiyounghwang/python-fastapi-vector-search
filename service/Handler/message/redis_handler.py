@@ -62,3 +62,31 @@ class Cache:
    def delete_key(self, key):
       return self.client.delete(key)
 
+   async def get_transformed_dict(self, lookup=None):
+      '''
+      transforming to json like
+       [
+         {
+            "EXPIRED_SECONDS": 0.95,
+            "INPUT_DATE": "2023-10-14 03:02:01",
+            "KEY": "1234",
+            "OBJECT_V": "1234",
+            "REQUEST_USER_ID": "pd292816"
+         },
+         {
+            "EXPIRED_SECONDS": 0.26666666666666666,
+            "INPUT_DATE": "2023-10-14 03:02:42",
+            "KEY": "1",
+            "OBJECT_V": "1",
+            "REQUEST_USER_ID": "pd292816"
+         }
+      ]
+      '''
+      if lookup:
+         all_datas = {k : dict(json.loads(await self.get_json_key(k))) for k in await self.get_keys_all() if k == lookup}
+      else:
+         all_datas = {k : dict(json.loads(await self.get_json_key(k))) for k in await self.get_keys_all()}
+         
+      # Update the gap time for each cache values
+      all_datas = await self.transform_to_pydantic_with_gap(all_datas)
+      return all_datas

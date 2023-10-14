@@ -24,3 +24,8 @@ langchain==0.0.310
 beautifulsoup4==4.12.2
 lxml==4.9.2
 tiktoken==0.3.3
+tenacity==8.2.3
+langsmith==0.0.43
+jsonpatch==1.33
+jsonpointer==2.4
+jsonschema==3.2.0

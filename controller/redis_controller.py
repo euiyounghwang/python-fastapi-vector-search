@@ -31,11 +31,12 @@ async def redis_get_keys():
     """
     try:
         # all_datas = {k : dict(json.loads(await Redis_Cache.get_json_key(k))) for k in await Redis_Cache.get_keys_all()}
-        all_datas = {k : dict(json.loads(await Redis_Cache.get_json_key(k))) for k in await Redis_Cache.get_keys_all()}
-        all_datas = await Redis_Cache.transform_to_pydantic_with_gap(all_datas)
-        print('all_datas', all_datas)
-        response_json = {'Total' : len(all_datas), 'Results': all_datas}
-        print(all_datas, type(all_datas))
+        # all_datas = {k : dict(json.loads(await Redis_Cache.get_json_key(k))) for k in await Redis_Cache.get_keys_all()}
+        # all_datas = await Redis_Cache.transform_to_pydantic_with_gap(all_datas)
+        # print('all_datas', all_datas)
+        response = await Redis_Cache.get_transformed_dict()
+        response_json = {'Total' : len(response), 'Results': response}
+        # print(all_datas, type(all_datas))
         logger.info('response - {}'.format(json.dumps(response_json, indent=2)))
         return response_json
     
