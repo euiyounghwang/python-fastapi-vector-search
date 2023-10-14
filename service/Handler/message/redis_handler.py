@@ -29,7 +29,7 @@ class Cache:
          print('#$%$', k, v)
          # reset_all_datas = v
          delta = datetime.now() - datetime.strptime(all_datas.get(k)['INPUT_DATE'], "%Y-%m-%d %H:%M:%S")
-         v.update({"KEY" :  k, "EXPIRED_SECONDS" : float(delta.seconds/60)})  
+         v.update({"KEY" :  k, "EXPIRED_SECONDS" : float(delta.seconds/60.0)})  
          results.append(v) 
       return results
       
