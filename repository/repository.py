@@ -18,17 +18,29 @@ class NoteRepository(object):
 
     async def fetchAll(self, db: Session, skip, limit, search):
         logger.info("fetchAll - skip: {}, limit: {}, search: {}".format(skip, limit, search))
-        results_repo = db.query(Notes) \
-                .filter(or_(Notes.title.contains(search), Notes.description.contains(search))) \
-                .limit(limit) \
-                .offset(skip) \
-                .all()
-        noteRepo = [obj.json() for obj in results_repo]
-        logger.info("Repo from Postgres: {}".format(json.dumps(noteRepo, indent=2)))
-        return results_repo, \
-               db.query(Notes) \
-                .filter(or_(Notes.title.contains(search), Notes.description.contains(search))) \
-                .all()
+        if search:
+            results_repo = db.query(Notes) \
+                    .filter(or_(Notes.title.contains(search), Notes.description.contains(search))) \
+                    .limit(limit) \
+                    .offset(skip) \
+                    .all()
+            noteRepo = [obj.json() for obj in results_repo]
+            logger.info("Repo from Postgres: {}".format(json.dumps(noteRepo, indent=2)))
+            return results_repo, \
+                db.query(Notes) \
+                    .filter(or_(Notes.title.contains(search), Notes.description.contains(search))) \
+                    .all()
+        else:
+            print('@#$%%')
+            results_repo = db.query(Notes) \
+                    .limit(limit) \
+                    .offset(skip) \
+                    .all()
+            noteRepo = [obj.json() for obj in results_repo]
+            logger.info("Repo from Postgres: {}".format(json.dumps(noteRepo, indent=2)))
+            return results_repo, \
+                db.query(Notes) \
+                    .all()
 
     async def fetchById(self, _id, db: Session):
         logger.info("fetchById - {}".format(_id))

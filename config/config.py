@@ -28,7 +28,7 @@ class Settings:
         self.RADIS_HOST: str = redis.Redis(host=os.getenv("RADIS_HOST", doc['app']['redis']['host']), 
                                            port=os.getenv("RADIS_PORT", doc['app']['redis']['port']), 
                                            db=os.getenv("REDIS_DATABASE", doc['app']['redis']['db']),
-                                           password='MTIzNA==',
+                                        #    password='MTIzNA==',
                                            decode_responses=True
                                            )
         self.logger.info('@@RABBIT - {}'.format(self.RABBITMQ_HOST))
