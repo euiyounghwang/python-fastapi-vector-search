@@ -1,6 +1,6 @@
 
 import pytest
-from injector import (SearchOmniHandlerInject, QueryBuilderInject)
+from injector import (SearchOmniHandlerInject, QueryBuilderInject, Redis_Cache)
 
 
 def SearchQuery():
@@ -35,3 +35,6 @@ def MockSearchHandler():
 
 def MockQueryHandler():
     return QueryBuilderInject
+
+def MockRedisHandler():
+    return Redis_Cache
