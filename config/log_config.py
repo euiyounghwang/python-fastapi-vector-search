@@ -14,7 +14,8 @@ class ColorFormatter(logging.Formatter):
     yellow = "\x1b[93m"
     red    = "\x1b[91m"
     reset  = "\x1b[0m"
-    format = "%(asctime)s | %(levelname)-5.5s | %(message)s"
+    # format = "%(asctime)s | %(levelname)-5.5s | %(message)s"
+    format='[%(asctime)s] [%(levelname)s] [%(module)s] [%(funcName)s] %(message)s'
 
     FORMATS = {
         logging.DEBUG: grey + format + reset,
