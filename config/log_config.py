@@ -48,7 +48,7 @@ def create_log():
     log_format.setFormatter(ColorFormatter())
 
     logging.basicConfig(
-        format='[%(asctime)s] [%(levelname)s] [%(module)s] [%(funcName)s] %(message)s',
+        # format='[%(asctime)s] [%(levelname)s] [%(module)s] [%(funcName)s] %(message)s',
         level=logging.INFO,
         datefmt='%Y-%m-%d %H:%M:%S',
         handlers=[
