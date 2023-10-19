@@ -4,6 +4,7 @@
 - A vector or an embedding is a numerical representation of text data. For example, using an embedding framework, text like ‘name’ can be transformed into a numerical representation
 - Semantic search consists of retrieving texts whose meaning matches a search query. For example, if your search query is “car,” the retrieved texts could include words such as “car,” “automobile,” “vehicle,” and so on. In contrast, keyword search only returns text passages with words of the search query.
 - The results of a semantic search are the texts whose embeddings are most similar to the query's embedding (https://blog.dataiku.com/semantic-search-an-overlooked-nlp-superpower?ref=dylancastillo.co)
+- Normalization is the process of transforming numerical data so that it uses a common scale.
 - Reference : https://pytest-with-eric.com/pytest-advanced/pytest-fastapi-testing/ 
 
 ### Install Tools
