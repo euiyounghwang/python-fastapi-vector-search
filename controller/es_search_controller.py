@@ -22,7 +22,8 @@ async def Elasticsearch_Search(request: Search):
         api_request_summary.labels(method="POST", endpoint="/v1/basic/search").observe(0.1)
         
         # logger.info("api_controller doc: {}".format(json.dumps(doc, indent=2)))
-        request_json = {k : v for k, v in request}
+        # request_json = {k : v for k, v in request}
+        request_json = request.to_json()
         print(request, type(request), request.size, request_json)
         logger.info("es_search_controller : {}".format(json.dumps(request_json, indent=2)))
         
