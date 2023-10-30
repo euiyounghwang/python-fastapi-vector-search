@@ -88,11 +88,24 @@ def api():
     return {"message": "Hello World"}
 
 
-@app.get("/v1/basic/api/{id}")
-def get(id:str):
-    api_request_counter.labels(method="GET", endpoint="/v1/basic/api/{id}", http_status=200).inc()
-    api_request_summary.labels(method="GET", endpoint="/v1/basic/api/{id}").observe(0.1)
-    return {"message": "Hello your id {}".format(id)}
+
+# --
+# Jinja2 template & filter call from html
+# --
+from fastapi.staticfiles import StaticFiles
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+'''
+http://localhost:7000/v1/basic/11
+https://fastapi.tiangolo.com/advanced/templates/
+'''
+from injector import templates
+@app.get("/v1/basic/{id}")
+def template_api(request: Request, id: str):
+    logger.info("request : {}, id : {}".format(request, id))
+    return templates.TemplateResponse("index.html", {"request": request, "id": id})
+
 
 
 # router

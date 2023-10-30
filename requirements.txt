@@ -29,3 +29,4 @@ langsmith==0.0.43
 jsonpatch==1.33
 jsonpointer==2.4
 jsonschema==3.2.0
+Jinja2==3.1.2

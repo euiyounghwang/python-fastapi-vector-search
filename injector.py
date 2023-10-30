@@ -63,3 +63,16 @@ SearchOmniHandlerInject = SearchOmniHandler(es_client, logger, doc['app'])
 QueryBuilderInject = QueryBuilder(es_client, logger, doc['app'])
 QueryVectorBuilderInject = QueryVectorBuilder(es_client, logger, doc['app'])
 metrics_service = ES_Utils(logger, doc, es_client)
+
+
+# --
+# Jinja2 template & filter call from html
+# --
+from fastapi.templating import Jinja2Templates
+templates = Jinja2Templates(directory="./template")
+
+'''
+https://abstractkitchen.com/blog/how-to-create-custom-jinja-filters-in-flask/
+'''
+from controller.Custome_jinja.filter import locale_code_to_name_filter
+templates.env.filters['lc_name'] = locale_code_to_name_filter
