@@ -96,8 +96,8 @@ jobs:
             conda/bin/conda create --yes --quiet --name fn-fastapi-services python=3.6
             source conda/bin/activate fn-fastapi-services
             pip install setuptools==43.0.0 &&
-            pip install --no-cache-dir -r test-requirements.txt &&
-            pip install --no-cache-dir -r requirements.txt --upgrade
+            pip install --no-cache-dir -r requirements-test.txt &&
+            pip install --no-cache-dir -r requirements.txt
 
       - run:
           name: tests
