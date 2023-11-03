@@ -14,6 +14,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_DB: 1234
           POSTGRES_HOST_AUTH_METHOD: trust
+          PGPORT: 15432
 #      - image: cimg/openjdk:11.0.12
       # - image: cimg/python:3.10
       - image: cimg/python:3.9.7
@@ -53,15 +54,63 @@ jobs:
       - run:
           name: Start Elasticsearch 7
           command: |
-            ES_JAVA_OPTS="-Xms1g -Xmx1g" elasticsearch-7.13.0/bin/elasticsearch
+            ES_JAVA_OPTS="-Xms1g -Xmx1g" elasticsearch-7.13.0/bin/elasticsearch -E http.port=9209
           background: true
 
 #      - restore_cache:
 #          key: fnbees-{{ .Branch }}-{{ checksum "environment_omnisearch.lst" }}-{{ checksum "requirements_omnisearch.txt" }}
 
+      # - restore_cache:
+      #     key: fnbees-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      
+      - run:
+          name: Install Conda
+          command: |
+            if [ ! -e conda ]; then
+            wget https://repo.continuum.io/miniconda/Miniconda3-4.7.12.1-Linux-x86_64.sh
+            bash Miniconda3-4.7.12.1-Linux-x86_64.sh -b -p conda
+            echo 'conda==4.7.12' > conda/conda-meta/pinned
 
-      - restore_cache:
-          key: fnbees-{{ .Branch }}-{{ checksum "requirements.txt" }}
+            # Do a flexible solve from the getgo
+            conda/bin/conda config --set channel_priority flexible
+
+            # Install boto
+            conda/bin/conda install -y boto3=1.9.7
+            fi
+
+            # Set .condarc
+            # cp ~/FN-BEES-Services/.circleci/test_condarc ~/.condarc
+
+#      - run:
+#          name: set AWS creds
+#          command: |
+#            cat >~/.boto \<<EOF
+#            [Credentials]
+#            aws_access_key_id = $AWS_ACCESS_KEY_ID
+#            aws_secret_access_key = $AWS_SECRET_ACCESS_KEY
+#            EOF
+
+      - run:
+          name: Install Dependencies
+          command: |
+            conda/bin/conda create --yes --quiet --name fn-fastapi-services python=3.6
+            source conda/bin/activate fn-fastapi-services
+            pip install setuptools==43.0.0 &&
+            pip install --no-cache-dir -r test-requirements.txt &&
+            pip install --no-cache-dir -r requirements.txt --upgrade
+
+      - run:
+          name: tests
+          command: |
+            source conda/bin/activate fn-fastapi-services &&
+            python -m py.test -v tests --disable-warnings
+#
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+      - store_test_results:
+          path: test-reports
 
    
   publish-latest:
