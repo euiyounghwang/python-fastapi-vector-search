@@ -134,7 +134,7 @@ jobs:
           name: Build Docker image
           command:
 #            docker build -t $IMAGE_NM:es .
-            docker build -t $IMAGE_NAME:es .
+            docker build -t $IMAGE_NAME:es . --target fta_runtime
 
       - run:
           name: Publish Docker Image to Docker Hub
