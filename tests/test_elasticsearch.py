@@ -43,8 +43,29 @@ def test_elasticsearch(mock_es_client):
         }
     )
 
-    # refresh
+    def create_alias(index, name):
+        ic.put_alias(index, name)
+
+    es.index(index="test_omnisearch_v1", id=111, body={
+        "title": "Cryptocurrency Regulations Act 111",
+        "locality": "us",
+        "bill_type": "BILL",
+        "start_date" : "2023-01-01 00:00:00"
+        }
+    )
+    es.index(index="test_omnisearch_v1", id=222, body={
+            "title": "Cryptocurrency Regulations Act 222",
+            "locality": "us",
+            "bill_type": "BILL",
+            "start_date": "2023-01-01 00:00:01"
+        }
+    )
+    
+    create_alias("test_omnisearch_v1", "omnisearch_search")
+    
+     # refresh
     es.indices.refresh(index="test_ngram_v1")
+    es.indices.refresh(index="test_omnisearch_v1")
 
 
 def test_indics_analyzer_elasticsearch(mock_es_client):
