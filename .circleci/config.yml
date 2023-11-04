@@ -96,6 +96,8 @@ jobs:
             conda/bin/conda create --yes --quiet --name fn-fastapi-services python=3.9
             source conda/bin/activate fn-fastapi-services
             conda/bin/conda update -y setuptools &&
+            conda/bin/conda install -c conda-forge sentence-transformers=2.2.2 && 
+            conda/bin/conda install -c conda-forge faiss-cpu=1.7.4 &&
             pip install --upgrade pip &&
             pip install -r requirements-test.txt --ignore-installed &&
             pip install -r requirements.txt --ignore-installed
