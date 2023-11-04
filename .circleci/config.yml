@@ -9,6 +9,7 @@ jobs:
     # Env with docker for openjdk instead of debian-11
     docker:
       - image: cimg/base:2023.08
+      - image: rabbitmq
       - image: circleci/postgres:9.6
         environment:
           POSTGRES_USER: postgres
