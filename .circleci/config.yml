@@ -97,8 +97,8 @@ jobs:
             source conda/bin/activate fn-fastapi-services
             conda/bin/conda update -y setuptools &&
             pip install --upgrade pip &&
-            pip install -r requirements-test.txt --ignore-installed &&
-            pip install -r requirements.txt --ignore-installed
+            pip install --no-deps -r requirements-test.txt --ignore-installed &&
+            pip install --no-deps -r requirements.txt --ignore-installed
 
       - run:
           name: tests
