@@ -104,7 +104,7 @@ jobs:
           name: tests
           command: |
             source conda/bin/activate fn-fastapi-services &&
-            python -m py.test -v tests --disable-warnings
+            py.test -v tests --disable-warnings
 #
       - store_artifacts:
           path: test-reports
