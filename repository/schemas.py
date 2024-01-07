@@ -28,7 +28,8 @@ class Search(BaseModel):
     # sort_order: str = "DESC"
     sort_order: Sort_Order = Sort_Order.desc
     start_date : str = "2021 01-01 00:00:00"
-    
+    ids_filters : list = ["*"]
+        
     def to_json(self):
         return {
             'include_basic_aggs' : self.include_basic_aggs,
@@ -37,6 +38,7 @@ class Search(BaseModel):
             'size' : self.size,
             'sort_order' : self.sort_order,
             'start_date' : self.start_date,
+            'ids_filters' : self.ids_filters
         }
     
     
