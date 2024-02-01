@@ -12,12 +12,12 @@ import repository.models
 from repository.database import engine, metadata
 
 from controller import (es_search_controller, 
-                        vector_search_controller, 
+                        # vector_search_controller, 
                         api_controller, 
                         task_controller, 
                         message_controller,
                         redis_controller,
-                        es_vector_controller
+                        # es_vector_controller
                         )
 from basic import api_request_counter, api_request_summary
 from service.Handler.message.rabbitmq_handler import RabbitMQApp
@@ -110,8 +110,8 @@ def template_api(request: Request, id: str):
 
 # router
 app.include_router(es_search_controller.app, tags=["Search"], )
-app.include_router(es_vector_controller.app, tags=["ES Vector Search"], )
-app.include_router(vector_search_controller.app, tags=["FAISS"], )
+# app.include_router(es_vector_controller.app, tags=["ES Vector Search"], )
+# app.include_router(vector_search_controller.app, tags=["FAISS"], )
 app.include_router(api_controller.app, tags=["Note"], )
 app.include_router(task_controller.app, tags=["Task"], )
 app.include_router(message_controller.app, tags=["Message"], )
