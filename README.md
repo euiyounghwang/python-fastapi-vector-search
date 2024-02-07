@@ -7,6 +7,7 @@
 - Normalization is the process of transforming numerical data so that it uses a common scale.
 - Reference : https://pytest-with-eric.com/pytest-advanced/pytest-fastapi-testing/ 
 
+
 ### Install Tools
 - Postgres
 ```
