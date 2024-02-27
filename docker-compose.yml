@@ -38,7 +38,7 @@ services:
     restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql://postgres:1234@host.docker.internal:15432/postgres
-      - ES_HOST=http://host.docker.internal:9209
+      - ES_HOST=http://host.docker.internal:9203
       - RABBIT_HOST=host.docker.internal
       - PUBLISH_QUEUE=fastapi_publish_queue
       - RADIS_HOST=host.docker.internal

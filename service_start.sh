@@ -7,8 +7,20 @@ set -e
 # cd $SCRIPTDIR
 # source .venv/bin/activate
 
+
+source ./read_config.sh
+
+# --
+# Call this function from './read_config.yaml.sh' to get ES_HOST value in config.yaml file
+get_value_from_yaml
+# --
+
 source /Users/euiyoung.hwang/opt/anaconda3/bin/activate fastapi_service
 # source conda activate fastapi_service
+
+# --
+# Waitng for ES
+./wait_for_es.sh $ES_HOST
 
 # GUNICORN is a WSGI framework which, di per se, is not compatible with Fastapi, since Fastapi uses the ASGI standard (i.e. asynchronous). 
 # This means that Gunicorn will have to use some layer of abstraction (uvicorn.workers.UvicornWorker) in order to communicate with the asynchronous call

@@ -55,7 +55,7 @@ jobs:
       - run:
           name: Start Elasticsearch 7
           command: |
-            ES_JAVA_OPTS="-Xms1g -Xmx1g" elasticsearch-7.13.0/bin/elasticsearch -E http.port=9209
+            ES_JAVA_OPTS="-Xms1g -Xmx1g" elasticsearch-7.13.0/bin/elasticsearch -E http.port=9203
           background: true
 
 #      - restore_cache:
